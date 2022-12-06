@@ -1,11 +1,13 @@
 local dashboard = require("dashboard")
 local version = vim.version()
 
-math.randomseed(os.time()) -- random initialize
-
 dashboard.session_directory = vim.fn.stdpath("data") .. "/sessions"
 
-local moods = {
+-----------------------------
+----- Header randomizer -----
+-----------------------------
+
+--[[ local moods = { -- A collection of ASCII art tables
     {
         "",
         "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡠⠤⠀⠀⠀⠀⠀⠀⠀",
@@ -48,8 +50,8 @@ local moods = {
      },
     {
         "",
-        "⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀",
-        "⣧⡀⠀⠀⠀⠉⠻⣦⣀⠀⠀⠀⠁⡀⠀⠉⠉⠁⠀⠈⢿⡀⣠⡤⠖⠛⠉⠀⠀⠀",
+        "⣀⣀⣀⣀⣀                       ⣀⣀⣀⣀",
+        "⣧⡀⠀⠀⠀⠉⠻⣦⣀⠀⠀⠀      ⠀    ⣠⡤⠖⠛⠉⠀⠀",
         "⣼⣷⣄⠀⠀⠀⠀⠀⠙⠳⠦⠤⠤⠴⠶⠶⠶⠶⠶⠖⠛⠋⠁⠀⠀⠀⠀⠀⠀⣸",
         "⠀⢺⣿⣦⡀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢄⣠⣾⢯",
         "⣤⣶⣮⣿⣿⡞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣎⣴⠿⠉⠀⠀",
@@ -102,10 +104,23 @@ local moods = {
      }
  }
 
-dashboard.custom_header = moods[math.random(1, 5)]
+math.randomseed(os.time()) -- Random seed
+dashboard.custom_header = moods[math.random(1, 5)] -- Select a random mood ]]
+
+-----------------------------
+------ Rainbow Header -------
+-----------------------------
+
+dashboard.preview_command = "cat | lolcat -F 0.3"
+dashboard.preview_file_path = "~/.config/nvim/static/neovim.cat"
+dashboard.preview_file_height = 15
+dashboard.preview_file_width = 30
+
+-----------------------------
+------- Banner setup --------
+-----------------------------
 
 local icon_color = "Function"
-
 dashboard.custom_center = {
     {
         desc = "Find File              ",
@@ -166,35 +181,3 @@ dashboard.custom_center = {
 dashboard.custom_footer = {
     "Build: " .. version.major .. "." .. version.minor .. "." .. version.patch .. " - nightly"
  }
-
-local header_height = #dashboard.custom_header
-local center_height = (#dashboard.custom_center * 2) + dashboard.center_pad
-
-local footer_height = dashboard.footer_pad
-if dashboard.custom_footer ~= nil then
-    footer_height = #dashboard.custom_footer + dashboard.footer_pad
-end
-
-local dashboard_height = header_height + center_height + footer_height
-
-local function update_padding()
-    local win_height = vim.fn.winheight(0)
-    local padding = (win_height - dashboard_height) / 2
-    dashboard.header_pad = padding
-end
-
-vim.api.nvim_create_autocmd("Filetype", {
-    pattern = "dashboard",
-    group = vim.api.nvim_create_augroup("dashboard_group", {
-        clear = true
-     }),
-    callback = function()
-        vim.cmd([[
-          setlocal buftype=nofile
-          setlocal nonumber norelativenumber nocursorline noruler
-          nnoremap <buffer> q <cmd>exit<CR>
-      ]])
-
-        update_padding()
-    end
- })

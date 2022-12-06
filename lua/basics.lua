@@ -39,7 +39,7 @@ vim.o.updatetime = 300 -- Faster completion (4000ms default)
 vim.o.wrap = false -- Disable line wrapping
 vim.o.writebackup = false -- If a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
 
-vim.cmd([[
+--[=[ vim.cmd([[
   set breakindent
   set breakindentopt=shift:2,min:40,sbr
 
@@ -48,4 +48,4 @@ vim.cmd([[
     let g:neovide_scroll_animation_length = 0.2
     let g:neovide_cursor_unfocused_outline_width = 0.1
   endif
-]])
+]]) ]=]

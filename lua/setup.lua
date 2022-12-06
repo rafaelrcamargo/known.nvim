@@ -15,28 +15,28 @@ vim.schedule(function() vim.cmd("colorscheme catppuccin") end)
 return require("packer").startup(function()
     use("wbthomason/packer.nvim")
 
-    -------------------
-    ---- Essentials ---
-    -------------------
+    -----------------------------
+    -------- Essentials ---------
+    -----------------------------
 
     use("lewis6991/impatient.nvim") -- Impatient and StartupTime,
     use("dstein64/vim-startuptime") -- for my own curiosity.
     use("nvim-lua/plenary.nvim") -- Required by *
     use("kyazdani42/nvim-web-devicons") -- Fun icons (Great w/ Telescope)
 
-    -------------------
-    --- Colorscheme ---
-    -------------------
+    -----------------------------
+    -------- Colorscheme --------
+    -----------------------------
 
     use {
-        "catppuccin/nvim",
+        "catppuccin/nvim", -- Colorscheme
         as = "catppuccin",
         config = function() require("plugins.catppuccin") end
      }
 
-    -------------------
-    --- Treesitter ----
-    -------------------
+    -----------------------------
+    -------- Treesitter ---------
+    -----------------------------
 
     use({
         {
@@ -61,9 +61,9 @@ return require("packer").startup(function()
          }
      })
 
-    -------------------
-    ---- Telescope ----
-    -------------------
+    -----------------------------
+    --------- Telescope ---------
+    -----------------------------
 
     use({
         {
@@ -73,19 +73,21 @@ return require("packer").startup(function()
             config = function() require("plugins.telescope") end
          },
         {
-            "AckslD/nvim-neoclip.lua",
+            "AckslD/nvim-neoclip.lua", -- Clipboard manager
             config = function() require("plugins.neoclip") end
          }
      })
 
-    -------------------
-    ------ Misc -------
-    -------------------
+    -----------------------------
+    ----------- Misc ------------
+    -----------------------------
 
-    use({
-        "nvim-lualine/lualine.nvim",
+    --[[ use({
+        "nvim-lualine/lualine.nvim", -- Statusline
+        after = "nvim-treesitter",
         config = function() require("plugins.lualine") end
-     })
+     }) ]]
+
     use({
         "numToStr/Comment.nvim", -- Commenting plugin
         after = "nvim-treesitter",
@@ -102,16 +104,16 @@ return require("packer").startup(function()
         event = "InsertEnter"
      })
     use({
-        "gbprod/cutlass.nvim",
+        "gbprod/cutlass.nvim", -- Correct delete copying
         event = "BufRead",
         config = function() require("plugins.cutlass") end
      })
     use({
-        "lewis6991/gitsigns.nvim",
+        "lewis6991/gitsigns.nvim", -- Git mods highlight
         config = function() require("gitsigns").setup() end
      })
     use({
-        "glepnir/dashboard-nvim",
+        "glepnir/dashboard-nvim", -- Main dashboard
         config = function() require("plugins.dashboard") end
      })
 end)
