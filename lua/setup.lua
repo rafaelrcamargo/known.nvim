@@ -15,75 +15,67 @@ vim.schedule(function() vim.cmd("colorscheme catppuccin") end)
 return require("packer").startup(function()
     use("wbthomason/packer.nvim")
 
-    -- Impatient and StartupTime for my curiosity
-    use("lewis6991/impatient.nvim")
-    use("dstein64/vim-startuptime")
+    -------------------
+    ---- Essentials ---
+    -------------------
 
-    -- Required by *
-    use("nvim-lua/plenary.nvim")
-
-    -- Fun icons (Great w/ Telescope)
-    use("kyazdani42/nvim-web-devicons")
-
-    use({
-        "neoclide/coc.nvim",
-        branch = "release",
-        run = "yarn install --frozen-lockfile",
-        config = function() require("plugins.coc") end
-     })
-
-    use({ {
-        "nvim-treesitter/nvim-treesitter", -- Syntax highlighting
-        run = ":TSUpdate",
-        config = function() require("plugins.treesitter") end
-     }, {
-        "windwp/nvim-ts-autotag", -- Auto close tags
-        after = "nvim-treesitter"
-     }, {
-        "JoosepAlviste/nvim-ts-context-commentstring", -- Set commentstring
-        after = "nvim-treesitter"
-     }, {
-        "p00f/nvim-ts-rainbow", -- Rainbow parentheses
-        after = "nvim-treesitter"
-     } })
-
-    use({ {
-        "nvim-telescope/telescope.nvim", -- Fuzzy finder
-        event = "CursorHold",
-        config = function() require("plugins.telescope") end
-     }, {
-        "fannheyward/telescope-coc.nvim",
-        after = { "telescope.nvim", "coc.nvim" },
-        config = function() require("telescope").load_extension("coc") end
-     } })
+    use("lewis6991/impatient.nvim") -- Impatient and StartupTime,
+    use("dstein64/vim-startuptime") -- for my own curiosity.
+    use("nvim-lua/plenary.nvim") -- Required by *
+    use("kyazdani42/nvim-web-devicons") -- Fun icons (Great w/ Telescope)
 
     -------------------
     --- Colorscheme ---
     -------------------
 
-    --[[ use({
-        "~/.config/nvim/lua/plugins/gruvbox-material.nvim", -- Gruvbox baby!
-        config = function()
-            vim.g.gruvbox_baby_transparent_mode = true
-            vim.cmd("colorscheme gruvbox-baby")
-        end
-     }) ]]
-
     use {
         "catppuccin/nvim",
         as = "catppuccin",
-        config = function()
-            require("catppuccin").setup({
-                flavour = "macchiato",
-                transparent_background = true
-             })
-        end
+        config = function() require("plugins.catppuccin") end
      }
 
+    -------------------
+    --- Treesitter ----
+    -------------------
+
     use({
-        "folke/trouble.nvim",
-        requires = "kyazdani42/nvim-web-devicons",
-        config = function() require("trouble").setup() end
+        {
+            "nvim-treesitter/nvim-treesitter", -- Syntax highlighting
+            run = ":TSUpdate",
+            config = function() require("plugins.treesitter") end
+         },
+        {
+            "windwp/nvim-ts-autotag", -- Auto close tags
+            after = "nvim-treesitter"
+         },
+        {
+            "JoosepAlviste/nvim-ts-context-commentstring", -- Set commentstring
+            after = {
+                "nvim-treesitter",
+                "Comment.nvim"
+             }
+         },
+        {
+            "p00f/nvim-ts-rainbow", -- Rainbow parentheses
+            after = "nvim-treesitter"
+         }
+     })
+
+    -------------------
+    ---- Telescope ----
+    -------------------
+
+    use({
+        {
+            "nvim-telescope/telescope.nvim", -- Fuzzy finder
+            cmd = "Telescope",
+            event = "ModeChanged",
+            config = function() require("plugins.telescope") end
+         },
+        {
+            "AckslD/nvim-neoclip.lua",
+            config = function() require("plugins.neoclip") end
+         }
      })
 
     -------------------
@@ -92,43 +84,34 @@ return require("packer").startup(function()
 
     use({
         "nvim-lualine/lualine.nvim",
-        requires = {
-            "kyazdani42/nvim-web-devicons",
-            opt = true
-         },
-        config = function()
-            require("lualine").setup({
-                options = {
-                    section_separators = "",
-                    component_separators = "",
-                    theme = "catppuccin"
-                 }
-             })
-        end
+        config = function() require("plugins.lualine") end
      })
     use({
         "numToStr/Comment.nvim", -- Commenting plugin
         after = "nvim-treesitter",
-        config = function()
-            require("Comment").setup {
-                pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook()
-             }
-        end
+        event = "CursorMoved",
+        config = function() require("plugins.comment") end
      })
     use({
         "lukas-reineke/indent-blankline.nvim", -- Indentation lines
-        event = "BufRead",
+        event = "BufReadPost",
         config = function() require("plugins.indentline") end
      })
-
-    --[[ use({
-        "norcalli/nvim-colorizer.lua", -- Color highlight
-        event = "CursorHold",
-        config = function() require("colorizer").setup({ "*" }) end
-     }) ]]
-
     use({
         "github/copilot.vim", -- Pair AI
         event = "InsertEnter"
+     })
+    use({
+        "gbprod/cutlass.nvim",
+        event = "BufRead",
+        config = function() require("plugins.cutlass") end
+     })
+    use({
+        "lewis6991/gitsigns.nvim",
+        config = function() require("gitsigns").setup() end
+     })
+    use({
+        "glepnir/dashboard-nvim",
+        config = function() require("plugins.dashboard") end
      })
 end)

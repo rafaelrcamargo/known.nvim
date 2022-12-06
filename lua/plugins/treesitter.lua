@@ -21,7 +21,8 @@ require("nvim-treesitter.configs").setup {
     -- p00f/nvim-ts-rainbow
     rainbow = {
         enable = true,
-        extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-        max_file_lines = 1000 -- Do not enable for files with more than n lines, int
+        extended_mode = false,
+        max_file_lines = 500,
+        colors = { "#d8a657", "#e78a4e", "#ea6962", "#d3869b", "#7daea3", "#89b482", "#a9b665" }
      }
  }

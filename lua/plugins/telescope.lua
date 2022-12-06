@@ -2,6 +2,9 @@ local actions = require("telescope.actions")
 local lactions = require("telescope.actions.layout")
 local finders = require("telescope.builtin")
 
+-- Schedule the neoclip extencion to be loaded after telescope
+vim.schedule(function() require("telescope").load_extension("neoclip") end)
+
 require("telescope").setup({
     defaults = {
         prompt_prefix = "   ",
@@ -46,9 +49,6 @@ end)
 vim.keymap.set("n", "<leader>H", Telescope.help_tags)
 
 vim.api.nvim_set_keymap("n", "<C-P>", "<cmd>lua require('telescope.builtin').find_files()<CR>", {
-    noremap = true
- })
-vim.api.nvim_set_keymap("n", "<C-N>", ":Telescope file_browser<CR>", {
     noremap = true
  })
 vim.api.nvim_set_keymap("n", "<C-F>", "<cmd>lua require('telescope.builtin').live_grep()<CR>", {
