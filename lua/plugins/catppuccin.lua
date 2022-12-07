@@ -53,6 +53,9 @@ require("catppuccin").setup({
          }, -- Tags like html classnames.
         ["@constructor.tsx"] = {
             fg = "#e78a4e"
-         } -- TSX tags.
+         }, -- TSX tags.
+        NonComment = {
+            fg = "#504945"
+         } -- InYoFace non comment syntax.
      }
  })

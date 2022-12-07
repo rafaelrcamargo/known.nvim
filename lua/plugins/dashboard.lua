@@ -121,63 +121,54 @@ dashboard.preview_file_width = 30
 -----------------------------
 
 local icon_color = "Function"
-dashboard.custom_center = {
-    {
-        desc = "Find File              ",
-        shortcut = " ff",
-        icon = "  ",
-        icon_hl = {
-            link = icon_color
-         },
-        action = "Telescope find_files"
+dashboard.custom_center = { {
+    desc = "Find File              ",
+    shortcut = " ff",
+    icon = "  ",
+    icon_hl = {
+        link = icon_color
      },
-    {
-        desc = "Recents                ",
-        shortcut = " fr",
-        icon = "  ",
-        icon_hl = {
-            link = icon_color
-         },
-        action = "Telescope oldfiles"
+    action = "Telescope find_files"
+ }, {
+    desc = "Recents                ",
+    shortcut = " fr",
+    icon = "  ",
+    icon_hl = {
+        link = icon_color
      },
-    {
-        desc = "New File               ",
-        shortcut = " bn",
-        icon = "  ",
-        icon_hl = {
-            link = icon_color
-         },
-        action = "DashboardNewFile"
+    action = "Telescope oldfiles"
+ }, {
+    desc = "New File               ",
+    shortcut = " bn",
+    icon = "  ",
+    icon_hl = {
+        link = icon_color
      },
-    {
-        desc = "Update Plugins         ",
-        shortcut = " pu",
-        icon = "  ",
-        icon_hl = {
-            link = icon_color
-         },
-        action = "PackerUpdate"
+    action = "DashboardNewFile"
+ }, {
+    desc = "Update Plugins         ",
+    shortcut = " pu",
+    icon = "  ",
+    icon_hl = {
+        link = icon_color
      },
-    {
-        desc = "Setting                ",
-        shortcut = " ns",
-        icon = "  ",
-        icon_hl = {
-            link = icon_color
-         },
-        action = "edit $MYVIMRC"
+    action = "PackerUpdate"
+ }, {
+    desc = "Setting                ",
+    shortcut = " ns",
+    icon = "  ",
+    icon_hl = {
+        link = icon_color
      },
-    {
-        desc = "Exit                   ",
-        shortcut = " qq",
-        icon = "  ",
-        icon_hl = {
-            link = icon_color
-         },
-        action = "exit"
-     }
- }
+    action = "edit $MYVIMRC"
+ }, {
+    desc = "Exit                   ",
+    shortcut = " qq",
+    icon = "  ",
+    icon_hl = {
+        link = icon_color
+     },
+    action = "exit"
+ } }
 
-dashboard.custom_footer = {
-    "Build: " .. version.major .. "." .. version.minor .. "." .. version.patch .. " - nightly"
- }
+dashboard.custom_footer = { "Build: " .. version.major .. "." .. version.minor .. "." .. version.patch .. " - nightly" }

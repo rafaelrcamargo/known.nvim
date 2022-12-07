@@ -10,7 +10,8 @@ vim.opt.shadafile = ""
 vim.opt.lazyredraw = true -- Unstable
 
 vim.o.backup = false -- This is recommended by coc
-vim.o.clipboard = "" -- Copy paste between vim and everything else
+--[[ vim.o.clipboard = "unnamedplus" -- System clipboard integration ]]
+vim.o.clipboard = "" -- Disbling this for now, it's causing issues with the WSL
 vim.o.cmdheight = 1 -- Space for displaying messages
 vim.o.conceallevel = 0 -- so that `` is visible in markdown files
 vim.o.cursorline = true -- Highlight current line
@@ -39,13 +40,14 @@ vim.o.updatetime = 300 -- Faster completion (4000ms default)
 vim.o.wrap = false -- Disable line wrapping
 vim.o.writebackup = false -- If a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
 
---[=[ vim.cmd([[
-  set breakindent
-  set breakindentopt=shift:2,min:40,sbr
+-- Correct identation
+vim.opt.breakindent = true
+vim.opt.breakindentopt = "shift:2,min:40,sbr"
 
-  if exists("g:neovide")
-    let g:neovide_transparency = 1
-    let g:neovide_scroll_animation_length = 0.2
-    let g:neovide_cursor_unfocused_outline_width = 0.1
-  endif
-]]) ]=]
+-- Set neovide up
+if vim.g.neovide then
+    vim.g.neovide_transparency = 1
+    vim.g.neovide_scroll_animation_length = 0.2
+    vim.g.neovide_cursor_unfocused_outline_width = 0.1
+    vim.o.guifont = "FiraCode Nerd Font"
+end

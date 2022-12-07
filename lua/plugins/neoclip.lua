@@ -1,7 +1,3 @@
 require("neoclip").setup({
-    default_register = {
-        "\"",
-        "+",
-        "*"
-     }
+    default_register = { "\"", "+", "*" }
  })
