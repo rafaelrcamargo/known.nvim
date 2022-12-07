@@ -9,4 +9,4 @@ vim.g.mapleader = " " -- Global leader
 vim.g.maplocalleader = " " -- Local leader
 
 -- Require all the setup, so *impatient* can cache it.
-require("setup") -- This will be the config entry point.
+require("init") -- This will be the config entry point.
