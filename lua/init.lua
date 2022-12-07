@@ -137,8 +137,8 @@ return require("packer").startup(function()
     ----------- LSP -------------
     -----------------------------
 
-    use("neovim/nvim-lspconfig")
+    --[[ use("neovim/nvim-lspconfig")
     use("simrat39/inlay-hints.nvim")
-    use("j-hui/fidget.nvim")
+    use("j-hui/fidget.nvim") ]]
 
 end)
