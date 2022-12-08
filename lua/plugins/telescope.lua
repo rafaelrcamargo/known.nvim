@@ -11,17 +11,7 @@ require("telescope").setup({
         selection_caret = "  ",
         entry_prefix = "   ",
         initial_mode = "insert",
-        sorting_strategy = "ascending",
-        mappings = {
-            i = {
-                ["<ESC>"] = actions.close,
-                ["<C-j>"] = actions.move_selection_next,
-                ["<C-k>"] = actions.move_selection_previous,
-                ["<C-s>"] = actions.send_selected_to_qflist,
-                ["<C-q>"] = actions.send_to_qflist,
-                ["<C-h>"] = lactions.toggle_preview
-             }
-         }
+        sorting_strategy = "ascending"
      }
  })
 
@@ -43,16 +33,3 @@ vim.keymap.set("n", "<C-P>", function()
         Telescope.find_files()
     end
 end)
-
--- Get :help at the speed of light
-vim.keymap.set("n", "<leader>H", Telescope.help_tags)
-
-vim.api.nvim_set_keymap("n", "<C-P>", "<cmd>lua require('telescope.builtin').find_files()<CR>", {
-    noremap = true
- })
-vim.api.nvim_set_keymap("n", "<C-F>", "<cmd>lua require('telescope.builtin').live_grep()<CR>", {
-    noremap = true
- })
-vim.api.nvim_set_keymap("n", "<C-B>", "<cmd>lua require('telescope.builtin').buffers()<CR>", {
-    noremap = true
- })

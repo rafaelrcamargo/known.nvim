@@ -1,12 +1,6 @@
--- Requiring impatient by the safe way:
-local ok, impatient = pcall(require, "impatient")
-if ok then
-    impatient.enable_profile()
-end
-
--- Setting our leader before plugins/keymaps are loaded:
-vim.g.mapleader = " " -- Global leader
-vim.g.maplocalleader = " " -- Local leader
+-- Requiring impatient by the safe & fast way:
+local ok, _ = pcall(require, "impatient")
+if not ok then vim.notify("\"impatient.nvim\" not found.", vim.log.levels.WARN) end
 
 -- Require all the setup, so *impatient* can cache it.
 require("init") -- This will be the config entry point.

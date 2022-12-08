@@ -9,8 +9,8 @@ local packer = function()
 
     local out = vim.fn.system(string.format("git clone %s %s", "https://github.com/wbthomason/packer.nvim", directory .. "/packer.nvim"))
 
-    print(out)
     print "Downloading packer.nvim..."
+    print(out)
     print "(You'll need to restart now)"
     vim.cmd [[qa]]
 end

@@ -4,22 +4,22 @@ local api, fn = vim.api, vim.fn
 
 local colors = {
     bg = "NONE",
-    fg = "#ddc7a1",
-    section_bg = "#504945",
-    blue = "#89b482",
-    green = "#a9b665",
-    purple = "#d3869b",
-    orange = "#e78a4e",
-    red = "#ea6962",
-    yellow = "#d8a657",
-    darkgrey = "#504945",
-    middlegrey = "#7c6f64"
+    fg = "#CED5E5",
+    section_bg = "#2B2E35",
+    blue = "#6CAFE5",
+    green = "#93D18B",
+    purple = "#B478DD",
+    orange = "#D08F52",
+    red = "#E06C75",
+    yellow = "#E1CD6C",
+    darkgrey = "#282C33",
+    middlegrey = "#7B8080"
  }
 local vi_mode_colors = {
-    NORMAL = "green",
+    NORMAL = "fg",
     OP = "red",
-    INSERT = "blue",
-    VISUAL = "purple",
+    INSERT = "green",
+    VISUAL = "blue",
     LINES = "purple",
     BLOCK = "purple",
     REPLACE = "red",
@@ -27,9 +27,9 @@ local vi_mode_colors = {
     ENTER = "blue",
     MORE = "blue",
     SELECT = "orange",
-    COMMAND = "green",
+    COMMAND = "red",
     SHELL = "green",
-    TERM = "blue",
+    TERM = "yellow",
     NONE = "yellow"
  }
 local mode_alias = {
@@ -99,10 +99,10 @@ local function file_name()
     filename = fn.fnamemodify(filename, ":t")
 
     if is_file(bufnr) and file_readonly(bufnr) then
-        return filename .. " "
+        return filename .. " "
     end
     if file_modified(bufnr) then
-        return filename .. " "
+        return filename .. " ﱤ"
     end
     return filename
 end
@@ -116,7 +116,7 @@ table.insert(components.active[1], {
     icon = "",
     hl = function()
         return {
-            fg = "#504945",
+            fg = "#31343B",
             bg = vi_mode.get_mode_color(),
             style = "bold"
          }
@@ -153,17 +153,16 @@ local function file_icon()
         default = false
      })
 
-    icon.str = string.format(" %s ", icon_str or "")
+    icon.str = string.format(" %s ", icon_str or "")
 
-    --[[ -- Icon coloring
-      if icon_hlname then
+    if icon_hlname then
         local fg = api.nvim_get_hl_by_name(icon_hlname, true).foreground
         if fg then
             icon.hl = {
                 fg = string.format("#%06x", fg)
              }
         end
-    end ]]
+    end
 
     return icon
 end
@@ -196,7 +195,7 @@ local function file_path()
     if len > 2 and not tbl[0] == "~" or len > 3 then
         return table.concat(tbl, "/", len - 1) -- path to last 2 folders
     else
-        return fp:sub(2) -- shorten filepath to last 2 folders
+        return ""
     end
 end
 
@@ -214,18 +213,14 @@ local function file_info()
     local filename = api.nvim_buf_get_name(bufnr)
     filename = fn.fnamemodify(filename, ":t")
 
-    -- if filename == '' then
-    --     filename = '[unnamed]'
-    -- end
-
     local readonly_str = ""
     local modified_str = ""
     if api.nvim_buf_get_option(bufnr, "readonly") then
-        readonly_str = " "
+        readonly_str = " "
     end
 
     if api.nvim_buf_get_option(bufnr, "modified") then
-        modified_str = " "
+        modified_str = " "
     end
 
     return readonly_str .. filename .. " " .. modified_str
@@ -262,7 +257,7 @@ local function lsp_check_diagnostics()
     if not vim.tbl_isempty(diagnostics) then
         return ""
     end
-    return " "
+    return " "
 end
 
 table.insert(components.active[1], {
@@ -282,7 +277,7 @@ end
 
 table.insert(components.active[1], {
     provider = function() return get_diagnostic_count(vim.diagnostic.severity.ERROR) end,
-    icon = "  ",
+    icon = "  ",
     hl = {
         fg = "red",
         bg = "bg"
@@ -290,7 +285,7 @@ table.insert(components.active[1], {
  })
 table.insert(components.active[1], {
     provider = function() return get_diagnostic_count(vim.diagnostic.severity.WARN) end,
-    icon = "  ",
+    icon = "  ",
     hl = {
         fg = "orange",
         bg = "bg"
@@ -298,17 +293,17 @@ table.insert(components.active[1], {
  })
 table.insert(components.active[1], {
     provider = function() return get_diagnostic_count(vim.diagnostic.severity.INFO) end,
-    icon = "  ",
+    icon = "  ",
     hl = {
         fg = "blue",
         bg = "bg"
      }
  })
 
--- RIGHT
+ -- RIGHT
 table.insert(components.active[2], {
     provider = "git_diff_added",
-    icon = "+",
+    icon = " ",
     hl = {
         fg = "green",
         bg = "bg"
@@ -317,7 +312,7 @@ table.insert(components.active[2], {
  })
 table.insert(components.active[2], {
     provider = "git_diff_changed",
-    icon = "~",
+    icon = " ",
     hl = {
         fg = "orange",
         bg = "bg"
@@ -326,21 +321,29 @@ table.insert(components.active[2], {
  })
 table.insert(components.active[2], {
     provider = "git_diff_removed",
-    icon = "-",
+    icon = " ",
     hl = {
         fg = "red",
         bg = "bg"
-     },
-    right_sep = " "
+     }
  })
+
+-- insert a string separator
+table.insert(components.active[2], {
+    provider = "  ",
+    hl = {
+        fg = "middlegrey",
+        bg = "bg"
+     }
+ })
+
 table.insert(components.active[2], {
     provider = "git_branch",
-    -- icon = ' ',
     hl = {
         fg = "middlegrey",
         bg = "bg"
      },
-    left_sep = " "
+    right_sep = " "
  })
 
 table.insert(components.inactive[1], {

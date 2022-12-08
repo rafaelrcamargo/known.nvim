@@ -10,29 +10,36 @@ local keymap = vim.api.nvim_set_keymap
 keymap("n", "<C-s>", ":w<CR>", opts)
 
 -- Closes the current buffer
-keymap("n", "<C-w>", ":bd<CR>", opts)
+keymap("n", "<leader>w", ":bd<CR>", opts)
 -- Closes the current window
-keymap("n", "<C-S-w>", ":q<CR>", opts)
+keymap("n", "<leader>W", ":q<CR>", opts)
 
 -- Jump lines
-keymap("n", "<C-Up>", ":-5<CR>", opts)
-keymap("n", "<C-Down>", ":+5<CR>", opts)
+keymap("n", "<C-Up>", "<cmd>+5<CR>", opts)
+keymap("n", "<C-Down>", "<cmd>-5<CR>", opts)
 
 -- Telescope mappings
 keymap("n", "<leader>fg", ":Telescope live_grep<CR>", opts)
 keymap("n", "<leader>ff", ":Telescope find_files<CR>", opts)
 keymap("n", "<leader>fb", ":Telescope buffers<CR>", opts)
+keymap("n", "<leader>fd", ":Telescope diagnostic<CR>", opts)
 
 -- Splits navigation
 keymap("n", "vs", ":vs<CR>", opts)
 keymap("n", "sp", ":sp<CR>", opts)
+
+-- Navigate between splits
+keymap("n", "<A-Left>", "<C-w>h", opts)
+keymap("n", "<A-Right>", "<C-w>l", opts)
+keymap("n", "<A-Up>", "<C-w>k", opts)
+keymap("n", "<A-Down>", "<C-w>j", opts)
 
 -- Correct the clipboard
 keymap("i", "<C-v>", "<C-r>+", opts)
 keymap("i", "<C-c>", "<C-r>0", opts)
 
 -- Repeat last command
-keymap("n", "<leader>.", "@:", opts)
+keymap("n", ".", "@:", opts)
 
 -- Search
 keymap("n", "<C-f>", ":%s/", opts)
@@ -42,8 +49,8 @@ keymap("n", "<leader>t", ":sp<CR> :term<CR> :resize 20N<CR> i", opts)
 
 -- Quick.nvim
 keymap("n", "tn", ":tabnew<CR>", opts)
-keymap("n", "tk", ":tabnext<CR>", opts)
-keymap("n", "tj", ":tabprev<CR>", opts)
+keymap("n", "t<Right>", ":tabnext<CR>", opts)
+keymap("n", "t<Left>", ":tabprev<CR>", opts)
 keymap("n", "to", ":tabo<CR>", opts)
 keymap("t", "<Esc>", "<C-\\><C-n>", opts)
 keymap("n", "<C-N>", ":Lexplore<CR> :vertical resize 30<CR>", opts)
