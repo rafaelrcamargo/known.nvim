@@ -7,7 +7,7 @@ vim.schedule(function() require("telescope").load_extension("neoclip") end)
 
 require("telescope").setup({
     defaults = {
-        prompt_prefix = "   ",
+        prompt_prefix = "   ",
         selection_caret = "  ",
         entry_prefix = "   ",
         initial_mode = "insert",

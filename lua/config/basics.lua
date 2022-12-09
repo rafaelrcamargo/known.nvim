@@ -10,8 +10,8 @@ vim.opt.shadafile = ""
 vim.opt.lazyredraw = true -- Unstable
 
 vim.opt.backup = false -- This is recommended by coc
-vim.opt.clipboard = "unnamedplus" -- System clipboard integration
--- vim.opt.clipboard = "" -- Disbling this for now, it's causing issues with the WSL
+-- vim.opt.clipboard = "unnamedplus" -- System clipboard integration
+vim.opt.clipboard = "" -- Disbling this for now, it's causing issues with the WSL
 vim.opt.cmdheight = 1 -- Space for displaying messages
 vim.opt.conceallevel = 0 -- so that `` is visible in markdown files
 vim.opt.cursorline = true -- Highlight current line

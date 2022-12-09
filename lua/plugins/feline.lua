@@ -300,7 +300,7 @@ table.insert(components.active[1], {
      }
  })
 
- -- RIGHT
+-- RIGHT
 table.insert(components.active[2], {
     provider = "git_diff_added",
     icon = " ",

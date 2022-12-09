@@ -114,8 +114,18 @@ return require("packer").startup(function()
     use({
         "akinsho/bufferline.nvim",
         tag = "v3.*",
-        config = function() require("bufferline").setup({}) end,
+        config = function() require("bufferline").setup() end,
         event = "BufWinEnter"
+     })
+    use({
+        "nvim-tree/nvim-tree.lua",
+        tag = "nightly",
+        cmd = "NvimTreeToggle",
+        config = function()
+            vim.g.loaded_netrw = 1
+            vim.g.loaded_netrwPlugin = 1
+            require("nvim-tree").setup()
+        end
      })
 
     -----------------------------
@@ -140,6 +150,7 @@ return require("packer").startup(function()
      })
     use({
         "gbprod/cutlass.nvim", -- Correct delete copying
+        keys = { "d" },
         event = "CursorMoved",
         config = function() require("plugins.cutlass") end
      })
@@ -172,14 +183,25 @@ return require("packer").startup(function()
     use({
         "windwp/nvim-autopairs",
         event = "InsertEnter",
-        config = function() require("nvim-autopairs").setup({}) end
+        config = function() require("nvim-autopairs").setup() end
      })
-
+    use({
+        "folke/todo-comments.nvim",
+        requires = "nvim-lua/plenary.nvim",
+        event = "BufRead",
+        config = function() require("plugins.todo") end
+     })
     use({
         "b0o/SchemaStore.nvim",
         module = "SchemaStore",
         ft = { "json", "yaml" }
-     }) -- Testing out this plugin
+     }) -- TODO: Test out this plugin
+
+    use({
+        "folke/twilight.nvim",
+        cmd = "Twilight",
+        config = function() require("twilight").setup() end
+     })
 
     -----------------------------
     ----------- Git -------------
@@ -200,7 +222,78 @@ return require("packer").startup(function()
         "neovim/nvim-lspconfig",
         config = function() require("plugins.lsp") end
      })
+    use({
+        "zbirenbaum/neodim",
+        after = "nvim-lspconfig",
+        event = "BufRead",
+        config = function()
+            require("neodim").setup({
+                alpha = 0.5,
+                blend_color = "#000000",
+                update_in_insert = {
+                    enable = true,
+                    delay = 100
+                 }
+             })
+        end
+     })
 
-    -- Think about it:
-    -- use("simrat39/inlay-hints.nvim")
+    -----------------------------
+    --------- Completion --------
+    -----------------------------
+
+    use({ {
+        "ms-jpq/coq_nvim",
+        branch = "coq",
+        event = "InsertEnter",
+        setup = function()
+            vim.g.coq_settings = {
+                auto_start = "shut-up",
+                completion = {
+                    always = false
+                 },
+                keymap = {
+                    pre_select = true,
+                    recommended = false,
+                    manual_complete_insertion_only = true
+                 },
+                display = {
+                    ghost_text = {
+                        enabled = false
+                     },
+                    pum = {
+                        kind_context = { "  ", "" },
+                        source_context = { "  ", "" }
+                     },
+                    preview = {
+                        border = { { "", "NormalFloat" }, { "", "NormalFloat" }, { "", "NormalFloat" }, { " ", "NormalFloat" }, { "", "NormalFloat" }, { "", "NormalFloat" }, { "", "NormalFloat" }, { " ", "NormalFloat" } }
+                     },
+                    icons = {
+                        mode = "short"
+                     }
+                 }
+             }
+        end
+     }, {
+        "ms-jpq/coq.artifacts",
+        event = "InsertEnter",
+        after = "coq_nvim",
+        branch = "artifacts"
+     }, {
+        "ms-jpq/coq.thirdparty",
+        branch = "3p",
+        ft = { "lua" },
+        event = "InsertEnter",
+        after = "coq_nvim",
+        config = function()
+            require("coq_3p") { {
+                src = "nvimlua",
+                short_name = "LUA"
+             }, {
+                src = "copilot",
+                short_name = "COP",
+                accept_key = "<tab>"
+             } }
+        end
+     } })
 end)
