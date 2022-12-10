@@ -1,4 +1,4 @@
-require("gruvbox").setup({
+require("catppuccin").setup({
     transparent_background = true,
     integrations = {
         ts_rainbow = false

@@ -1,3 +1,7 @@
+-- Pre-load the colorscheme if possible
+local ok, _ = pcall(vim.cmd, "colorscheme catppuccin")
+if not ok then vim.cmd("silent! colorscheme slate") end
+
 -- Disable some default loaded plugins
 require("config.loaded")
 
@@ -5,28 +9,22 @@ require("config.loaded")
 vim.g.mapleader = " " -- Global leader
 vim.g.maplocalleader = " " -- Local leader
 
--- Load plugins
-require("config.basics")
+require("config.basics") -- Load plugins
 
 vim.schedule(function()
-    -- Load keymaps
-    require("config.keymaps")
+    require("config.keymaps") -- Load keymaps
 end)
 
-if require("config.setup")() then
-    return
-end
+if require("config.setup")() then return end
 
 -- Packer config
 return require("packer").startup(function()
-    use("wbthomason/packer.nvim")
+    use("wbthomason/packer.nvim") -- Package manager
 
     -----------------------------
     -------- Essentials ---------
     -----------------------------
 
-    use("lewis6991/impatient.nvim") -- Impatient and StartupTime,
-    use("dstein64/vim-startuptime") -- for my own curiosity.
     use({
         "nvim-lua/plenary.nvim",
         module = "plenary"
@@ -34,34 +32,34 @@ return require("packer").startup(function()
     use({
         "kyazdani42/nvim-web-devicons",
         module = "nvim-web-devicons"
-     }) -- Fun icons (Great w/ Telescope)
+     }) -- Dev icons, used everywhere
+
+    -----------------------------
+    -------- Profiling ----------
+    -----------------------------
+
+    use("lewis6991/impatient.nvim") -- Impatient and StartupTime,
+    use("dstein64/vim-startuptime") -- for my own curiosity.
 
     -----------------------------
     -------- Colorscheme --------
     -----------------------------
 
-    use({
+    --[[ use({
         "Yagua/nebulous.nvim", -- Cool alternative material colorscheme
         config = function()
             require("nebulous").setup({
                 variant = "fullmoon",
-                disable = {
-                    background = true
-                 }
+                disable = { background = true }
              })
-
-            vim.cmd("colorscheme nebulous")
-        end
-     })
-
-    --[[ use({
-        "catppuccin/nvim", -- A Catppuccin patched to look like material-gruvbox, but with a decent performance
-        as = "gruvbox", -- I know, sounds weird, but works.
-        config = function()
-          require("plugins.gruvbox")
-          vim.cmd("colorscheme gruvbox")
         end
      }) ]]
+
+    use({
+        "catppuccin/nvim", -- A Catppuccin patched to look like gruvbox-material, but with a decent performance.
+        as = "catppuccin", -- I know, sounds weird, but works.
+        config = function() require("plugins.catppuccin") end
+     })
 
     -----------------------------
     -------- Treesitter ---------
@@ -69,12 +67,8 @@ return require("packer").startup(function()
 
     use({ {
         "nvim-treesitter/nvim-treesitter", -- Syntax highlighting
-        run = function()
-            require("nvim-treesitter.install").update({
-                with_sync = true
-             })()
-        end,
-        config = function() require("plugins.treesitter") end
+        run = function() require("plugins.treesitter").install() end,
+        config = function() require("plugins.treesitter").config() end
      }, {
         "windwp/nvim-ts-autotag", -- Auto close tags
         after = "nvim-treesitter",
@@ -114,18 +108,14 @@ return require("packer").startup(function()
     use({
         "akinsho/bufferline.nvim",
         tag = "v3.*",
-        config = function() require("bufferline").setup() end,
-        event = "BufWinEnter"
+        event = "BufWinEnter",
+        config = function() require("bufferline").setup() end
      })
     use({
         "nvim-tree/nvim-tree.lua",
         tag = "nightly",
         cmd = "NvimTreeToggle",
-        config = function()
-            vim.g.loaded_netrw = 1
-            vim.g.loaded_netrwPlugin = 1
-            require("nvim-tree").setup()
-        end
+        config = function() require("plugins.tree") end
      })
 
     -----------------------------
@@ -166,19 +156,7 @@ return require("packer").startup(function()
         "tjdevries/vim-inyoface", -- Make comments appear IN YO FACE
         keys = { "cc" },
         module = "inyoface",
-        config = function() vim.api.nvim_set_keymap("n", "<leader>cc", "<cmd>call inyoface#toggle_comments()<CR>", {}) end
-     })
-    use({
-        "NvChad/nvim-colorizer.lua",
-        event = "BufRead",
-        config = function()
-            require("colorizer").setup({
-                user_default_options = {
-                    tailwind = true,
-                    names = false
-                 }
-             })
-        end
+        config = function() require("plugins.inyoface") end
      })
     use({
         "windwp/nvim-autopairs",
@@ -226,16 +204,7 @@ return require("packer").startup(function()
         "zbirenbaum/neodim",
         after = "nvim-lspconfig",
         event = "BufRead",
-        config = function()
-            require("neodim").setup({
-                alpha = 0.5,
-                blend_color = "#000000",
-                update_in_insert = {
-                    enable = true,
-                    delay = 100
-                 }
-             })
-        end
+        config = function() require("plugins.neodim") end
      })
 
     -----------------------------
@@ -246,34 +215,7 @@ return require("packer").startup(function()
         "ms-jpq/coq_nvim",
         branch = "coq",
         event = "InsertEnter",
-        setup = function()
-            vim.g.coq_settings = {
-                auto_start = "shut-up",
-                completion = {
-                    always = false
-                 },
-                keymap = {
-                    pre_select = true,
-                    recommended = false,
-                    manual_complete_insertion_only = true
-                 },
-                display = {
-                    ghost_text = {
-                        enabled = false
-                     },
-                    pum = {
-                        kind_context = { "  ", "" },
-                        source_context = { "  ", "" }
-                     },
-                    preview = {
-                        border = { { "", "NormalFloat" }, { "", "NormalFloat" }, { "", "NormalFloat" }, { " ", "NormalFloat" }, { "", "NormalFloat" }, { "", "NormalFloat" }, { "", "NormalFloat" }, { " ", "NormalFloat" } }
-                     },
-                    icons = {
-                        mode = "short"
-                     }
-                 }
-             }
-        end
+        setup = function() require("plugins.coq") end
      }, {
         "ms-jpq/coq.artifacts",
         event = "InsertEnter",
@@ -285,15 +227,6 @@ return require("packer").startup(function()
         ft = { "lua" },
         event = "InsertEnter",
         after = "coq_nvim",
-        config = function()
-            require("coq_3p") { {
-                src = "nvimlua",
-                short_name = "LUA"
-             }, {
-                src = "copilot",
-                short_name = "COP",
-                accept_key = "<tab>"
-             } }
-        end
+        config = function() require("plugins.coq.thirdparty") end
      } })
 end)
