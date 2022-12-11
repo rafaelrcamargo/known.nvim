@@ -24,4 +24,4 @@ vim.schedule(function()
 end)
 
 -- Require all the setup, so *impatient* can cache it.
-require "init" -- This will be the config entry point.
+-- require "init" -- This will be the config entry point.
