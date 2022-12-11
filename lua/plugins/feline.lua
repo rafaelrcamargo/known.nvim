@@ -1,20 +1,9 @@
+local palette = require("utils.palette")
+
 local lazy_require = require("feline.utils").lazy_require
 local vi_mode = lazy_require "feline.providers.vi_mode"
-local api, fn = vim.api, vim.fn
+local api, fn, isempty, diagnostic = vim.api, vim.fn, vim.tbl_isempty, vim.diagnostic
 
-local colors = {
-    bg = "NONE",
-    fg = "#CED5E5",
-    section_bg = "#2B2E35",
-    blue = "#6CAFE5",
-    green = "#93D18B",
-    purple = "#B478DD",
-    orange = "#D08F52",
-    red = "#E06C75",
-    yellow = "#E1CD6C",
-    darkgrey = "#282C33",
-    middlegrey = "#7B8080"
- }
 local vi_mode_colors = {
     NORMAL = "fg",
     OP = "red",
@@ -30,7 +19,7 @@ local vi_mode_colors = {
     COMMAND = "red",
     SHELL = "green",
     TERM = "yellow",
-    NONE = "yellow"
+    NONE = "bg"
  }
 local mode_alias = {
     ["n"] = "NORMAL",
@@ -77,19 +66,13 @@ local function is_file(bufnr)
 end
 
 local function file_readonly(bufnr)
-    if api.nvim_buf_get_option(bufnr, "filetype") == "help" then
-        return false
-    end
-    if api.nvim_buf_get_option(bufnr, "readonly") then
-        return true
-    end
+    if api.nvim_buf_get_option(bufnr, "filetype") == "help" then return false end
+    if api.nvim_buf_get_option(bufnr, "readonly") then return true end
     return false
 end
 
 local function file_modified(bufnr)
-    if api.nvim_buf_get_option(bufnr, "modifiable") and api.nvim_buf_get_option(bufnr, "modified") then
-        return true
-    end
+    if api.nvim_buf_get_option(bufnr, "modifiable") and api.nvim_buf_get_option(bufnr, "modified") then return true end
     return false
 end
 
@@ -98,12 +81,8 @@ local function file_name()
     local filename = api.nvim_buf_get_name(bufnr)
     filename = fn.fnamemodify(filename, ":t")
 
-    if is_file(bufnr) and file_readonly(bufnr) then
-        return filename .. " "
-    end
-    if file_modified(bufnr) then
-        return filename .. " ﱤ"
-    end
+    if is_file(bufnr) and file_readonly(bufnr) then return filename .. " " end
+    if file_modified(bufnr) then return filename .. " " end
     return filename
 end
 
@@ -116,7 +95,7 @@ table.insert(components.active[1], {
     icon = "",
     hl = function()
         return {
-            fg = "#31343B",
+            fg = palette.base,
             bg = vi_mode.get_mode_color(),
             style = "bold"
          }
@@ -128,9 +107,7 @@ local function split(str, sep)
     local n = 1
     for w in str:gmatch("([^" .. sep .. "]*)") do
         res[n] = res[n] or w -- only set once (so the blank after a string is ignored)
-        if w == "" then
-            n = n + 1
-        end -- step forwards on a blank but not a string
+        if w == "" then n = n + 1 end -- step forwards on a blank but not a string
     end
     return res
 end
@@ -145,9 +122,7 @@ local function file_icon()
     filename = fn.fnamemodify(filename, ":t")
     local extension = fn.fnamemodify(filename, ":e")
 
-    if filename == "" then
-        return icon
-    end
+    if filename == "" then return icon end
 
     local icon_str, icon_hlname = require("nvim-web-devicons").get_icon(filename, extension, {
         default = false
@@ -155,14 +130,14 @@ local function file_icon()
 
     icon.str = string.format(" %s ", icon_str or "")
 
-    if icon_hlname then
+    --[[ if icon_hlname then
         local fg = api.nvim_get_hl_by_name(icon_hlname, true).foreground
         if fg then
             icon.hl = {
                 fg = string.format("#%06x", fg)
              }
         end
-    end
+    end ]]
 
     return icon
 end
@@ -171,16 +146,14 @@ table.insert(components.active[1], {
     provider = "",
     icon = file_icon,
     hl = {
-        bg = "section_bg"
+        bg = "base"
      }
  })
 
 local function file_path()
     local bufnr = api.nvim_win_get_buf(0)
 
-    if not is_file(bufnr) then
-        return ""
-    end
+    if not is_file(bufnr) then return "" end
 
     local filename = api.nvim_buf_get_name(bufnr)
     local fp = fn.fnamemodify(filename, ":~:.")
@@ -203,8 +176,8 @@ table.insert(components.active[1], {
     provider = file_path,
     enabled = function() return api.nvim_win_get_width(0) >= 80 end,
     hl = {
-        fg = "middlegrey",
-        bg = "section_bg"
+        fg = "grey",
+        bg = "base"
      }
  })
 
@@ -215,13 +188,9 @@ local function file_info()
 
     local readonly_str = ""
     local modified_str = ""
-    if api.nvim_buf_get_option(bufnr, "readonly") then
-        readonly_str = " "
-    end
+    if api.nvim_buf_get_option(bufnr, "readonly") then readonly_str = " " end
 
-    if api.nvim_buf_get_option(bufnr, "modified") then
-        modified_str = " "
-    end
+    if api.nvim_buf_get_option(bufnr, "modified") then modified_str = " " end
 
     return readonly_str .. filename .. " " .. modified_str
 end
@@ -231,52 +200,48 @@ table.insert(components.active[1], {
     provider = file_info,
     hl = {
         fg = "fg",
-        bg = "section_bg"
+        bg = "base"
      },
     left_sep = "",
     right_sep = {
         str = "slant_right",
         hl = {
-            fg = "section_bg",
+            fg = "base",
             bg = "bg"
          }
      }
  })
 
 local function lsp_check_diagnostics()
-    if vim.tbl_isempty(vim.lsp.get_active_clients {
+    if isempty(vim.lsp.get_active_clients {
         bufnr = 0
-     }) then
-        return ""
-    end
-    local diagnostics = vim.diagnostic.get(0, {
+     }) then return "" end
+    local diagnostics = diagnostic.get(0, {
         severity = {
-            min = vim.diagnostic.severity.INFO
+            min = diagnostic.severity.INFO
          }
      })
-    if not vim.tbl_isempty(diagnostics) then
-        return ""
-    end
-    return " "
+    if not isempty(diagnostics) then return "  " end
+    return "   "
 end
 
 table.insert(components.active[1], {
     provider = lsp_check_diagnostics,
     hl = {
-        fg = "middlegrey",
+        fg = "grey",
         bg = "bg"
      }
  })
 
 local function get_diagnostic_count(severity)
-    local count = #vim.diagnostic.get(0, {
+    local count = #diagnostic.get(0, {
         severity = severity
      })
     return count ~= 0 and count .. " " or ""
 end
 
 table.insert(components.active[1], {
-    provider = function() return get_diagnostic_count(vim.diagnostic.severity.ERROR) end,
+    provider = function() return get_diagnostic_count(diagnostic.severity.ERROR) end,
     icon = "  ",
     hl = {
         fg = "red",
@@ -284,7 +249,7 @@ table.insert(components.active[1], {
      }
  })
 table.insert(components.active[1], {
-    provider = function() return get_diagnostic_count(vim.diagnostic.severity.WARN) end,
+    provider = function() return get_diagnostic_count(diagnostic.severity.WARN) end,
     icon = "  ",
     hl = {
         fg = "orange",
@@ -292,7 +257,7 @@ table.insert(components.active[1], {
      }
  })
 table.insert(components.active[1], {
-    provider = function() return get_diagnostic_count(vim.diagnostic.severity.INFO) end,
+    provider = function() return get_diagnostic_count(diagnostic.severity.INFO) end,
     icon = "  ",
     hl = {
         fg = "blue",
@@ -332,7 +297,7 @@ table.insert(components.active[2], {
 table.insert(components.active[2], {
     provider = "  ",
     hl = {
-        fg = "middlegrey",
+        fg = "grey",
         bg = "bg"
      }
  })
@@ -340,7 +305,7 @@ table.insert(components.active[2], {
 table.insert(components.active[2], {
     provider = "git_branch",
     hl = {
-        fg = "middlegrey",
+        fg = "grey",
         bg = "bg"
      },
     right_sep = " "
@@ -350,19 +315,22 @@ table.insert(components.inactive[1], {
     provider = file_name,
     hl = {
         fg = "fg",
-        bg = "section_bg"
+        bg = "base"
      },
     right_sep = {
         str = "slant_right",
         hl = {
-            fg = "section_bg",
+            fg = "base",
             bg = "bg"
          }
      }
  })
 
+local theme = palette
+theme["bg"] = "NONE"
+
 require("feline").setup {
-    theme = colors,
+    theme = palette,
     vi_mode_colors = vi_mode_colors,
     components = components,
     force_inactive = {

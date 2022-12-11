@@ -1,11 +1,13 @@
+local palette = require("utils.palette")
+
 require("todo-comments").setup({
     colors = {
-        error = { "#E06C75" },
-        warning = { "#E1CD6C" },
-        info = { "#6CAFE5" },
-        hint = { "#93D18B" },
-        default = { "#B478DD" },
-        test = { "#7B8080" }
+        error = palette.red,
+        warning = palette.yellow,
+        info = palette.blue,
+        hint = palette.green,
+        default = palette.purple,
+        test = palette.grey
      }, -- Color certain keywords
     keywords = {
         FIX = {

@@ -1,20 +1,3 @@
--- Pre-load the colorscheme if possible
-local ok, _ = pcall(vim.cmd, "colorscheme catppuccin")
-if not ok then vim.cmd("silent! colorscheme slate") end
-
--- Disable some default loaded plugins
-require("config.loaded")
-
--- Setting our leader before plugins/keymaps are loaded:
-vim.g.mapleader = " " -- Global leader
-vim.g.maplocalleader = " " -- Local leader
-
-require("config.basics") -- Load plugins
-
-vim.schedule(function()
-    require("config.keymaps") -- Load keymaps
-end)
-
 if require("config.setup")() then return end
 
 -- Packer config
@@ -38,8 +21,10 @@ return require("packer").startup(function()
     -------- Profiling ----------
     -----------------------------
 
-    use("lewis6991/impatient.nvim") -- Impatient and StartupTime,
-    use("dstein64/vim-startuptime") -- for my own curiosity.
+    use({ "lewis6991/impatient.nvim", {
+        "dstein64/vim-startuptime",
+        cmd = "StartupTime"
+     } })
 
     -----------------------------
     -------- Colorscheme --------
@@ -47,18 +32,13 @@ return require("packer").startup(function()
 
     --[[ use({
         "Yagua/nebulous.nvim", -- Cool alternative material colorscheme
-        config = function()
-            require("nebulous").setup({
-                variant = "fullmoon",
-                disable = { background = true }
-             })
-        end
+        config = function() require("plugins.colorscheme").nebulous() end
      }) ]]
 
     use({
         "catppuccin/nvim", -- A Catppuccin patched to look like gruvbox-material, but with a decent performance.
         as = "catppuccin", -- I know, sounds weird, but works.
-        config = function() require("plugins.catppuccin") end
+        config = function() require("plugins.colorscheme").catppuccin() end
      })
 
     -----------------------------
@@ -70,16 +50,8 @@ return require("packer").startup(function()
         run = function() require("plugins.treesitter").install() end,
         config = function() require("plugins.treesitter").config() end
      }, {
-        "windwp/nvim-ts-autotag", -- Auto close tags
-        after = "nvim-treesitter",
-        event = "InsertEnter"
-     }, {
         "JoosepAlviste/nvim-ts-context-commentstring", -- Set commentstring
-        after = "nvim-treesitter",
         event = "ModeChanged"
-     }, {
-        "p00f/nvim-ts-rainbow", -- Rainbow parentheses
-        after = "nvim-treesitter"
      } })
 
     -----------------------------
@@ -88,7 +60,6 @@ return require("packer").startup(function()
 
     use({ {
         "nvim-telescope/telescope.nvim", -- Fuzzy finder
-        cmd = "Telescope",
         event = "ModeChanged",
         config = function() require("plugins.telescope") end
      }, {
@@ -103,13 +74,14 @@ return require("packer").startup(function()
 
     use({
         "feline-nvim/feline.nvim", -- Statusline
+        after = "nvim-web-devicons",
         config = function() require("plugins.feline") end
      })
     use({
         "akinsho/bufferline.nvim",
         tag = "v3.*",
         event = "BufWinEnter",
-        config = function() require("bufferline").setup() end
+        config = function() require("plugins.bufferline") end
      })
     use({
         "nvim-tree/nvim-tree.lua",
@@ -123,14 +95,20 @@ return require("packer").startup(function()
     -----------------------------
 
     use({
-        "numToStr/Comment.nvim", -- Commenting plugin
-        after = "nvim-treesitter",
+        "numToStr/Comment.nvim", -- Smart commenting
         keys = { "gc", "gb" },
+        after = "nvim-treesitter",
         config = function() require("plugins.comment") end
      })
     use({
-        "Darazaki/indent-o-matic", -- Auto indentation plugin
+        "Darazaki/indent-o-matic", -- Auto indentation
         event = "ModeChanged"
+     })
+    use({
+        "Pocco81/auto-save.nvim", -- Auto save, when possible
+        keys = { "d", "x" },
+        event = "InsertLeave",
+        config = function() require("auto-save").setup() end
      })
     use({
         "lukas-reineke/indent-blankline.nvim", -- Indentation lines
@@ -141,13 +119,12 @@ return require("packer").startup(function()
     use({
         "gbprod/cutlass.nvim", -- Correct delete copying
         keys = { "d" },
-        event = "CursorMoved",
         config = function() require("plugins.cutlass") end
      })
-    use({
+    --[[ use({
         "glepnir/dashboard-nvim", -- Main dashboard
         config = function() require("plugins.dashboard") end
-     })
+     }) ]]
     use({
         "github/copilot.vim", -- Pair AI
         event = "InsertEnter"
@@ -159,27 +136,25 @@ return require("packer").startup(function()
         config = function() require("plugins.inyoface") end
      })
     use({
-        "windwp/nvim-autopairs",
+        "windwp/nvim-autopairs", -- Auto pairs
         event = "InsertEnter",
         config = function() require("nvim-autopairs").setup() end
      })
     use({
-        "folke/todo-comments.nvim",
-        requires = "nvim-lua/plenary.nvim",
+        "folke/todo-comments.nvim", -- Special comment highlighting
         event = "BufRead",
         config = function() require("plugins.todo") end
      })
-    use({
-        "b0o/SchemaStore.nvim",
-        module = "SchemaStore",
-        ft = { "json", "yaml" }
-     }) -- TODO: Test out this plugin
-
     use({
         "folke/twilight.nvim",
         cmd = "Twilight",
         config = function() require("twilight").setup() end
      })
+
+    use({
+        "b0o/SchemaStore.nvim",
+        ft = { "json", "yaml" }
+     }) -- TODO: Test out this plugin
 
     -----------------------------
     ----------- Git -------------
@@ -187,7 +162,6 @@ return require("packer").startup(function()
 
     use({
         "lewis6991/gitsigns.nvim", -- Git mods highlight
-        disable = vim.fn.executable "git" == 0,
         event = "BufRead",
         config = function() require("gitsigns").setup() end
      })
@@ -196,15 +170,26 @@ return require("packer").startup(function()
     ----------- LSP -------------
     -----------------------------
 
-    use({
+    use({ {
+        "williamboman/mason.nvim",
+        cmd = "Mason",
+        config = function() require("plugins.mason") end
+     }, {
+        "williamboman/mason-lspconfig.nvim",
+        after = "mason.nvim"
+     }, {
         "neovim/nvim-lspconfig",
         config = function() require("plugins.lsp") end
-     })
-    use({
+     }, {
         "zbirenbaum/neodim",
-        after = "nvim-lspconfig",
-        event = "BufRead",
+        keys = { "gd" },
         config = function() require("plugins.neodim") end
+     } })
+    use({
+        "jose-elias-alvarez/null-ls.nvim",
+        after = "nvim-lspconfig",
+        event = "ModeChanged",
+        config = function() require("plugins.null") end
      })
 
     -----------------------------
@@ -219,14 +204,11 @@ return require("packer").startup(function()
      }, {
         "ms-jpq/coq.artifacts",
         event = "InsertEnter",
-        after = "coq_nvim",
         branch = "artifacts"
      }, {
         "ms-jpq/coq.thirdparty",
         branch = "3p",
-        ft = { "lua" },
         event = "InsertEnter",
-        after = "coq_nvim",
         config = function() require("plugins.coq.thirdparty") end
      } })
 end)

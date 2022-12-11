@@ -1,41 +1,40 @@
-local M = {}
+local schedule = vim.schedule
+local M = {
+    ["install"] = function() end,
+    ["config"] = function() end
+ } -- We do that so the lua compiler knows that we're going to define those functions later, not having to rehash the table each time.
 
--- Setup nvim-treesitter.install
+-- Setup nvim-treesitter auto update:
 function M.install()
-    require("nvim-treesitter.install").update({
-        with_sync = true
-     })()
+    schedule(function()
+        require("nvim-treesitter.install").update({
+            with_sync = true
+         })()
+    end)
 end
 
--- Setup nvim-treesitter.configs
+local ts_configs = require("nvim-treesitter.configs")
+
+-- Setup nvim-treesitter setup:
 function M.config()
-    require("nvim-treesitter.configs").setup({
-        auto_install = true,
-        ensure_installed = { "html", "css", "javascript", "typescript", "json", "yaml", "lua", "bash", "python", "c", "cpp", "rust", "go" },
-        highlight = {
-            enable = true, -- Enable highlighting for all files
-            additional_vim_regex_highlighting = false
-         },
-        indent = {
-            enable = true
-         },
-        -- windwp/nvim-ts-autotag
-        autotag = {
-            enable = true
-         },
-        -- numToStr/Comment.nvim
-        context_commentstring = {
-            enable = true,
-            enable_autocmd = false
-         },
-        -- p00f/nvim-ts-rainbow
-        rainbow = {
-            enable = true,
-            extended_mode = false,
-            max_file_lines = 500,
-            colors = { "#d8a657", "#e78a4e", "#ea6962", "#d3869b", "#7daea3", "#89b482", "#a9b665" }
-         }
-     })
+    ts_configs.setup({})
+    schedule(function()
+        ts_configs.setup({
+            auto_install = true,
+            ensure_installed = { "html", "css", "javascript", "typescript", "json", "yaml", "lua", "bash", "python", "c", "cpp", "rust", "go" },
+            highlight = {
+                enable = true,
+                additional_vim_regex_highlighting = false
+             },
+            indent = {
+                enable = true
+             },
+            context_commentstring = {
+                enable = true,
+                enable_autocmd = false
+             }
+         })
+    end)
 end
 
 return M

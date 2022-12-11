@@ -1,23 +1,24 @@
-local packer = function()
-    if vim.fn.input "Download Packer? (y for yes)" ~= "y" then
-        return
-    end
+local fn = vim.fn
 
-    local directory = string.format("%s/site/pack/packer/start/", vim.fn.stdpath "data")
+local download_packer = function()
+    if fn.input("Download Packer? [y/n]") ~= "y" then return end
 
-    vim.fn.mkdir(directory, "p")
+    local directory = string.format("%s/site/pack/packer/start/", fn.stdpath "data")
 
-    local out = vim.fn.system(string.format("git clone %s %s", "https://github.com/wbthomason/packer.nvim", directory .. "/packer.nvim"))
+    fn.mkdir(directory, "p")
 
-    print "Downloading packer.nvim..."
+    local out = fn.system(string.format("git clone %s %s", "https://github.com/wbthomason/packer.nvim", directory .. "/packer.nvim"))
+
+    print("Downloading packer.nvim...")
     print(out)
-    print "(You'll need to restart now)"
+    print("You'll need to restart now")
+
     vim.cmd [[qa]]
 end
 
 return function()
     if not pcall(require, "packer") then
-        packer()
+        download_packer()
         return true
     end
     return false

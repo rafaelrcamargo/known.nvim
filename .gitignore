@@ -1,1 +1,8 @@
+# Preventing packer from uploading the plugin build source to the repo
 plugin
+
+# I know this is kinda funny, and i agree.
+.vscode
+
+# LSP Build files
+lua-language-server
