@@ -2,7 +2,7 @@ local g, cmd = vim.g, vim.cmd
 
 -- Requiring impatient by the safe & fast way:
 local ok, _ = pcall(require, "impatient")
-if not ok then print "impatient.nvim not found!" end
+if not ok then print "Impatient.nvim not found! ([:PackerSync] may help!)" end
 
 -- Disable some default loaded plugins
 require "config.loaded"
