@@ -6,3 +6,6 @@ plugin
 
 # LSP Build files
 lua-language-server
+
+# Dont need every .config file ever
+.editorconfig
