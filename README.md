@@ -21,6 +21,11 @@
 
 <!--------------------------------------------------------------------------------------->
 
+<br/>
+<img src="assets/test.gif" alt="Known.nvim" width="100%" />
+
+<!--------------------------------------------------------------------------------------->
+
 <h2 id="what">What?</h2>
 
 A heavily opinionated, performant, and functional Neovim config. Without forgetting the usability, simplicity, and visual appeal. Every line was carefully written, and every plugin has a reason to be there.
@@ -41,8 +46,8 @@ This configuration was built following these 2 sets of principles:
   <summary>UI (Neovim)</summary>
 
 - Less is more.
-  - The UI elements should have a pourpose, the focus is on the code, the UI should add information, relevant information.
-- Less information does not mean ugly, raw or boring.
+  - The UI elements should have a purpose, the focus is on the code, and the UI should add information and relevant information.
+- Less information does not mean ugly, raw, or boring.
 - Icons are not just pretty, they are also useful.
   - Predictable icons are better than text.
   - Icons are faster to read.
@@ -50,7 +55,7 @@ This configuration was built following these 2 sets of principles:
 - The UI should be consistent.
   - The UI should not change drastically from one plugin to another.
   - CLS (Cumulative Layout Shift) should be avoided.
-- The UI should de lazy and never block the user.
+- The UI should be lazy and never block the user.
 
 </details>
 
@@ -79,13 +84,13 @@ The installation is very simple, just run the following command:
 git clone --depth 1 https://github.com/rafaelrcamargo/know.nvim.git ~/.config/nvim
 ```
 
-> **Note:** If you already have a `~/.config/nvim` folder, you probably want to backup it first.
+> **Note:** If you already have a `~/.config/nvim` folder, you probably want to back up it first.
 
 ---
 
 <h2 id="features">Features</h2>
 
-The optimization and set of rules that this config follows, makes it very efficient, easy to use and remember. The following list is a summary of the features that this config has:
+The optimization and set of rules that this config follows make it very efficient, and easy to use and remember. The following list is a summary of the features that this config has:
 
 - Packer:
   - A package manager to ease the lazy loading of plugins.
@@ -94,7 +99,7 @@ The optimization and set of rules that this config follows, makes it very effici
 - Neoclip:
   - A clipboard manager to copy and paste from the Neovim buffer.
 - Feline:
-  - A statusline to show information about the current buffer.
+  - A status line to show information about the current buffer.
 - Bufferline:
   - A tabline to show the open buffers.
 - Nvim-tree:
@@ -114,18 +119,18 @@ The optimization and set of rules that this config follows, makes it very effici
 - Mason:
   - A helper for the LSP installation process.
 - Neodim:
-  - Dont ever again forget unused code laying around.
+  - Don't ever again forget unused code laying around.
 - Null-ls:
   - A LSP+ experience with a lot of extra features.
 - Coq:
   - A Fast as F#CK autocomplete engine.
 
 > **INFO:**:
-> Ok, thats a lot of features I got it, but these are only the most relevant ones. There are lots os configurations ment only to make your life easier, and to make you feel like home.
+> Ok, that's a lot of features I got, but these are only the most relevant ones. There are lots of configurations meant only to make your life easier, and to make you feel at home.
 
 <h3>Colorschemes</h3>
 
-The main colorscheme used in this config is [material-gruvbox](https://github.com/sainnhe/gruvbox-material), but with this **beautiful** theme comes a huge problem, and a thing avoided by any sane person: **IS VIMSCRIPT**. So, to avoid the performance hit, this config uses [catppuccin](https://github.com/catppuccin/nvim) a modern and one of, if not the most advanced colorscheme for Neovim. It is written in Lua, and compiled as you need, so it's very fast. And with it we have the possibility to use the colors and create our own material-gruvbox colorscheme, jumping from `~12.01ms` to a load time of `~0.03ms`.
+The main color scheme used in this config is [material-gruvbox](https://github.com/sainnhe/gruvbox-material), but with this **beautiful** theme comes a huge problem, and a thing avoided by any sane person: **IS VIMSCRIPT**. So, to avoid the performance hit, this config uses [catppuccin](https://github.com/catppuccin/nvim) a modern and one of, if not the most advanced color scheme for Neovim. It is written in Lua and compiled as you need, so it's very fast. And with it we can use the colors and create our material-gruvbox color scheme, jumping from `~12.01ms` to a load time of `~0.03ms`.
 
 > 🍨 Soothing pastel theme for (Neo)vim
 
@@ -133,7 +138,7 @@ The main colorscheme used in this config is [material-gruvbox](https://github.co
 
 But this is not all, also nebulous is configured, just not active for now.
 
-> nebulous.nvim: Minimalist Collection of Colorschemes for Neovim Written in Lua
+> nebulous.nvim: Minimalist Collection of Color schemes for Neovim Written in Lua
 
 <!-- TODO: Nebulous demo -->
 
@@ -148,7 +153,7 @@ If you want to contribute to this project, you can do it in many ways:
 - **Request features**:
   - If you have a feature request, please report it in the [issues]()
 
-> But the biggest one, discuss, discuss, discuss. If you have a problem, or a doubt, or just want to talk about something, please do it, I'm always open to talk about anything.
+> But the biggest one, discuss, discuss, discuss. If you have a problem or a doubt, or just want to talk about something, please do it, I'm always open to talking about anything.
 
 ---
 
