@@ -84,7 +84,7 @@ The installation is very simple, just run the following command:
 git clone --depth 1 https://github.com/rafaelrcamargo/know.nvim.git ~/.config/nvim
 ```
 
-> **Warning**
+> **Warning**:
 > If you already have a `~/.config/nvim` folder, you probably want to back up it first.
 
 <h2 id="features">💡 Features</h2>
@@ -129,7 +129,7 @@ The optimization and set of rules that this config follows make it very efficien
 
 </details>
 
-> **Note**
+> **Note**:
 > Ok, that's a lot of features I got, but these are only the most relevant ones. There are lots of configurations meant only to make your life easier, and to make you feel at home.
 
 <h3>🎨 Colorschemes</h3>
@@ -193,8 +193,11 @@ This project is licensed under the [Apache License 2.0][license].
 
 [license]: https://github.com/rafaelrcamargo/dotfiles/blob/main/LICENSE
 [issues]: https://github.com/rafaelrcamargo/dotfiles/issues
-[discussions]: https://github.com/rafaelrcamargo/dotfiles/discussions
 [code_size]: https://github.com/rafaelrcamargo/dotfiles/tree/main
 [neovim]: https://github.com/neovim/neovim
 
 <!--------------------------------------------------------------------------------------->
+
+<!-- Notes: -->
+<!-- https://www.lua.org/gems/sample.pdf -->
+<!-- https://neovim.io/doc/user/lua.html -->
