@@ -76,8 +76,8 @@ opt.whichwrap:append "<>[]hl"
 
 -- Set neovide config
 if g.neovide then
-    g.neovide_transparency = 1
-    g.neovide_scroll_animation_length = 0.2
-    g.neovide_cursor_unfocused_outline_width = 0.1
-    opt.guifont = "FiraCode Nerd Font"
+  g.neovide_transparency = 1
+  g.neovide_scroll_animation_length = 0.2
+  g.neovide_cursor_unfocused_outline_width = 0.1
+  opt.guifont = "FiraCode Nerd Font"
 end

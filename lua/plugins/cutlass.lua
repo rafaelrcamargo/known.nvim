@@ -1,3 +1,3 @@
-require("cutlass").setup({
-    cut_key = "x"
- })
+require("cutlass").setup {
+  cut_key = "x",
+}
