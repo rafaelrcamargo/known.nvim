@@ -1,9 +1,7 @@
 local fn = vim.fn
 
 local download_packer = function()
-  if fn.input "Download Packer? [y/n]" ~= "y" then
-    return
-  end
+  if fn.input "Download Packer? [y/n]" ~= "y" then return end
 
   local directory = string.format("%s/site/pack/packer/start/", fn.stdpath "data")
 

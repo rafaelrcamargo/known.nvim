@@ -13,7 +13,7 @@ function M.catppuccin()
   require("catppuccin").setup {
     transparent_background = true,
     color_overrides = {
-      all = {
+      mocha = {
         rosewater = "#ddc7a1",
         flamingo = "#ddc7a1",
         pink = "#d3869b",

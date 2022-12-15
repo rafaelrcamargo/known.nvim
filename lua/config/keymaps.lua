@@ -4,9 +4,6 @@ local opts = { noremap = true, silent = true }
 -- Shorten function name
 local keymap = vim.api.nvim_set_keymap
 
--- Write buffer
-keymap("n", "<C-s>", ":w<CR>", opts)
-
 -- Closes the current buffer
 keymap("n", "<leader>w", ":bd<CR>", opts)
 keymap("n", "<leader>W", ":bd!<CR>", opts)
@@ -20,7 +17,7 @@ keymap("n", "<C-Up>", ":-5<CR>", opts)
 keymap("n", "<C-Down>", ":+5<CR>", opts)
 
 -- Toggle NvimTree
-keymap("n", "<leader>t", ":NvimTreeToggle<CR>", opts)
+keymap("n", "<leader>tt", ":NvimTreeToggle<CR>", opts)
 
 -- Telescope mappings
 keymap("n", "<leader>ff", ":Telescope find_files<CR>", opts)
@@ -28,8 +25,8 @@ keymap("n", "<leader>fg", ":Telescope live_grep<CR>", opts)
 keymap("n", "<leader>fb", ":Telescope buffers<CR>", opts)
 
 -- Splits navigation
-keymap("n", "vs", ":vs<CR>", opts)
-keymap("n", "hs", ":sp<CR>", opts)
+keymap("n", "<leader>sv", ":vs<CR>", opts)
+keymap("n", "<leader>sh", ":sp<CR>", opts)
 
 -- Navigate between splits
 keymap("n", "<A-Left>", "<C-w>h", opts)
@@ -45,7 +42,7 @@ keymap("i", "<C-v>", "<C-r>+", opts)
 keymap("n", ".", "@:", opts)
 
 -- Search
-keymap("n", "<C-f>", ":%s/", opts)
+keymap("n", "<leader>sf", ":%s/", opts)
 
 -- Terminal
 keymap("n", "T", ":sp<CR> :term<CR> :resize 20N<CR>", opts)
@@ -57,3 +54,5 @@ keymap("v", ">", ">gv", opts)
 -- Move text up and down
 keymap("v", "<A-Down>", ":m .+1<CR>==", opts)
 keymap("v", "<A-Up>", ":m .-2<CR>==", opts)
+keymap("n", "<A-Down>", ":m .+1<CR>==", opts)
+keymap("n", "<A-Up>", ":m .-2<CR>==", opts)
