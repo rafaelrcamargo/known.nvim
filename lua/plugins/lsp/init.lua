@@ -56,6 +56,11 @@ lspconfig.rust_analyzer.setup {
   on_attach = on_attach,
 }
 
+-- Setup LSP for OCaml
+lspconfig.ocamllsp.setup {
+  on_attach = on_attach,
+}
+
 local signs = {
   {
     name = "DiagnosticSignError",

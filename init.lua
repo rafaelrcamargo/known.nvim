@@ -31,4 +31,4 @@ local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
 vim.env.PATH = vim.env.PATH .. (is_windows and ";" or ":") .. vim.fn.stdpath "data" .. "/mason/bin"
 
 -- Require all the setup, so *impatient* can cache it.
--- require "init" -- This will be the config entry point.
+require "init" -- This will be the config entry point.

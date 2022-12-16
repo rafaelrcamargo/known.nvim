@@ -1,4 +1,4 @@
-if require "config.setup"() then return end
+if require "config.setup" () then return end
 
 return require("packer").startup(function()
   -- Packer config
@@ -59,7 +59,7 @@ return require("packer").startup(function()
     {
       "nvim-telescope/telescope.nvim", -- Fuzzy finder
       event = "ModeChanged",
-      config = function() require "plugins.misc.telescope"() end,
+      config = function() require "plugins.misc.telescope" () end,
     },
     {
       "AckslD/nvim-neoclip.lua", -- Clipboard manager
@@ -73,6 +73,7 @@ return require("packer").startup(function()
 
     {
       "feline-nvim/feline.nvim", -- Statusline
+      after = "nvim-web-devicons",
       config = function() require "plugins.ui.feline" end,
     },
     {
@@ -108,6 +109,12 @@ return require("packer").startup(function()
     ----------- Misc ------------
     -----------------------------
 
+    {
+      "CRAG666/code_runner.nvim", -- Run code
+      cmd = "RunCode",
+      config = function() require "plugins.misc.runner".config() end,
+      setup = function() require "plugins.misc.runner".setup() end,
+    },
     {
       "mg979/vim-visual-multi", -- Multiple cursors
       keys = { "n", "d" },
@@ -172,12 +179,12 @@ return require("packer").startup(function()
     {
       "lewis6991/gitsigns.nvim", -- Git mods highlight
       event = "BufRead",
-      config = function() require "plugins.git.signs"() end,
+      config = function() require "plugins.git.signs" () end,
     },
     {
       "f-person/git-blame.nvim",
       event = "CursorMoved",
-      setup = function() require "plugins.git.blame"() end,
+      setup = function() require "plugins.git.blame" () end,
     },
 
     -----------------------------
