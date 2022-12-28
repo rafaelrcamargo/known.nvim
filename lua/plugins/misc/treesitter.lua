@@ -7,9 +7,9 @@ local M = {
 -- Setup nvim-treesitter auto update:
 function M.install()
   schedule(function()
-    require("nvim-treesitter.install").update {
+    pcal(require("nvim-treesitter.install").update {
       with_sync = true,
-    }()
+    })
   end)
 end
 
@@ -37,12 +37,22 @@ function M.config()
           "rust",
           "go",
         },
+        incremental_selection = {
+          enable = true,
+          keymaps = {
+            init_selection = "<c-space>",
+            node_incremental = "<c-space>",
+            scope_incremental = "<c-s>",
+            node_decremental = "<c-backspace>",
+          },
+        },
         highlight = {
           enable = true,
           additional_vim_regex_highlighting = false,
         },
         indent = {
           enable = true,
+          disable = { "python" },
         },
         context_commentstring = {
           enable = true,

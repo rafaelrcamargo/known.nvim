@@ -166,7 +166,7 @@ local function file_path()
   local len = #tbl
 
   if len > 2 and not tbl[0] == "~" or len > 3 then
-    return table.concat(tbl, "/", len - 1) -- path to last 2 folders
+    return table.concat(tbl, "/", len - 1) .. "/" -- path to last 2 folders
   else
     return ""
   end

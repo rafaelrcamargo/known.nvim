@@ -9,11 +9,15 @@ return function()
       entry_prefix = "   ",
       initial_mode = "insert",
       sorting_strategy = "ascending",
+      layout_strategy = "vertical",
+      layout_config = {
+        height = 10, -- maximally available lines
+      },
     },
     pickers = {
-      find_files = {
-        theme = "ivy",
-      },
+      find_files = { theme = "ivy" },
+      buffers = { theme = "ivy" },
+      live_grep = { theme = "ivy" },
     },
   }
 end

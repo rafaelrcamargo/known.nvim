@@ -1,6 +1,17 @@
-if require "config.setup" () then return end
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system { "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path }
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
+end
 
-return require("packer").startup(function()
+local packer_bootstrap = ensure_packer()
+
+require("packer").startup(function()
   -- Packer config
   use {
     "wbthomason/packer.nvim", -- Package manager
@@ -51,6 +62,10 @@ return require("packer").startup(function()
       "JoosepAlviste/nvim-ts-context-commentstring", -- Set commentstring
       event = "ModeChanged",
     },
+    { -- Additional text objects via treesitter
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      after = "nvim-treesitter",
+    },
 
     -----------------------------
     --------- Telescope ---------
@@ -73,13 +88,11 @@ return require("packer").startup(function()
 
     {
       "feline-nvim/feline.nvim", -- Statusline
-      after = "nvim-web-devicons",
       config = function() require "plugins.ui.feline" end,
     },
     {
       "akinsho/bufferline.nvim",
       tag = "v3.*",
-      event = "BufAdd",
       config = function() require "plugins.ui.bufferline" end,
     },
     {
@@ -104,16 +117,39 @@ return require("packer").startup(function()
       "glepnir/dashboard-nvim", -- Main dashboard
       config = function() require "plugins.ui.dashboard" end,
     },
+    {
+      "mrshmllow/document-color.nvim",
+      config = function()
+        require("document-color").setup {
+          -- Default options
+          mode = "background", -- "background" | "foreground" | "single"
+        }
+      end,
+    },
 
     -----------------------------
     ----------- Misc ------------
     -----------------------------
 
     {
+      "akinsho/toggleterm.nvim",
+      tag = "*",
+      config = function() require("toggleterm").setup() end,
+    },
+    {
+      "folke/trouble.nvim",
+      cmd = "TroubleToggle",
+      config = function() require("trouble").setup {} end,
+    },
+    {
+      "mbbill/undotree",
+      cmd = "UndotreeToggle",
+    },
+    {
       "CRAG666/code_runner.nvim", -- Run code
       cmd = "RunCode",
-      config = function() require "plugins.misc.runner".config() end,
-      setup = function() require "plugins.misc.runner".setup() end,
+      config = function() require("plugins.misc.runner").config() end,
+      setup = function() require("plugins.misc.runner").setup() end,
     },
     {
       "mg979/vim-visual-multi", -- Multiple cursors
@@ -192,19 +228,28 @@ return require("packer").startup(function()
     -----------------------------
 
     {
+      "neovim/nvim-lspconfig",
+      event = "BufRead",
+      requires = {
+        -- Automatically install LSPs to stdpath for neovim
+        "williamboman/mason.nvim",
+        "williamboman/mason-lspconfig.nvim",
+        "j-hui/fidget.nvim",
+      },
+      config = function() require "plugins.lsp" end,
+    },
+
+    {
       "williamboman/mason.nvim",
       cmd = "Mason",
       config = function() require "plugins.lsp.mason" end,
     },
     {
       "williamboman/mason-lspconfig.nvim",
+      after = "mason.nvim",
       event = "BufRead",
     },
-    {
-      "neovim/nvim-lspconfig",
-      event = "BufRead",
-      config = function() require "plugins.lsp" end,
-    },
+
     {
       "zbirenbaum/neodim",
       after = "nvim-lspconfig",
@@ -222,6 +267,22 @@ return require("packer").startup(function()
       after = "nvim-lspconfig",
       event = "ModeChanged",
       config = function() require "plugins.lsp.null" end,
+    },
+    {
+      "j-hui/fidget.nvim",
+      event = { "BufRead" },
+      config = function()
+        require("fidget").setup {
+          window = {
+            blend = 0,
+          },
+          timer = {
+            spinner_rate = 100, -- frame rate of spinner animation, in ms
+            fidget_decay = 100, -- how long to keep around empty fidget, in ms
+            task_decay = 100, -- how long to keep around completed task, in ms
+          },
+        }
+      end,
     },
 
     -----------------------------
@@ -246,4 +307,26 @@ return require("packer").startup(function()
       config = function() require "plugins.coq.thirdparty" end,
     },
   }
+
+  if packer_bootstrap then require("packer").sync() end
 end)
+
+local augroup, autocmd = vim.api.nvim_create_augroup, vim.api.nvim_create_autocmd
+
+-- Automatically source and re-compile packer whenever you save this init.lua
+local packer_group = augroup("Packer", { clear = true })
+autocmd("BufWritePost", {
+  command = "source <afile> | PackerCompile",
+  group = packer_group,
+  pattern = vim.fn.expand "$MYVIMRC",
+})
+
+-- Set completeopt to have a better completion experience
+vim.o.completeopt = "menuone,noselect"
+
+local highlight_group = augroup("YankHighlight", { clear = true })
+autocmd("TextYankPost", {
+  callback = function() vim.highlight.on_yank() end,
+  group = highlight_group,
+  pattern = "*",
+})
