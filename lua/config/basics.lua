@@ -20,8 +20,8 @@ opt.swapfile = false
 
 opt.undofile = true
 
--- opt.clipboard = "unnamedplus"
-opt.clipboard = "" -- Disabling for now, it's WSL...
+opt.clipboard = "unnamedplus"
+-- opt.clipboard = "" -- Disabling for now, it's WSL...
 
 opt.cmdheight = 1
 opt.cursorline = true
@@ -76,7 +76,9 @@ opt.whichwrap:append "<>[]hl"
 
 -- Set neovide config
 if g.neovide then
-  g.neovide_transparency = 1
+  g.neovide_transparency = 0.2
+  g.transparency = 0.2
+  g.neovide_background_color = "#ffffff"
   g.neovide_scroll_animation_length = 0.2
   g.neovide_cursor_unfocused_outline_width = 0.1
   opt.guifont = "FiraCode Nerd Font"
