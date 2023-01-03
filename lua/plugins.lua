@@ -47,7 +47,8 @@ require("packer").startup(function()
     --   "catppuccin/nvim", -- A Catppuccin patched to look like gruvbox-material, but with a decent performance.
     --   as = "catppuccin", -- I know, sounds weird, but works.
     --   config = function() require("plugins.ui.colorscheme").catppuccin() end,
-    -- },\
+    -- },
+
     {
       "rebelot/kanagawa.nvim",
       config = function()
@@ -157,9 +158,7 @@ require("packer").startup(function()
     },
     {
       "brenoprata10/nvim-highlight-colors",
-      config = function()
-        require("nvim-highlight-colors").setup {}
-      end,
+      config = function() require("nvim-highlight-colors").setup {} end,
     },
 
     -----------------------------
@@ -347,14 +346,6 @@ require("packer").startup(function()
 end)
 
 local augroup, autocmd = vim.api.nvim_create_augroup, vim.api.nvim_create_autocmd
-
--- Automatically source and re-compile packer whenever you save this init.lua
-local packer_group = augroup("Packer", { clear = true })
-autocmd("BufWritePost", {
-  command = "source <afile> | PackerCompile",
-  group = packer_group,
-  pattern = vim.fn.expand "$MYVIMRC",
-})
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = "menuone,noselect"

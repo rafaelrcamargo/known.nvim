@@ -125,9 +125,9 @@ local config = {
   signs = {
     active = signs,
   },
-  update_in_insert = true,
-  underline = false,
+  underline = true,
   severity_sort = true,
+  update_in_insert = true,
   float = {
     focusable = false,
     style = "minimal",

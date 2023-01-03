@@ -7,7 +7,7 @@ local M = {
 -- Setup nvim-treesitter auto update:
 function M.install()
   schedule(function()
-    pcal(require("nvim-treesitter.install").update {
+    pcall(require("nvim-treesitter.install").update {
       with_sync = true,
     })
   end)
