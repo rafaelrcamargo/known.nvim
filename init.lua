@@ -1,3 +1,6 @@
+if vim.g.vscode then
+  require("config.basics")
+else
 -- Requiring impatient by the safe & fast way:
 local ok, _ = pcall(require, "impatient")
 if not ok then print "Impatient.nvim not found! (:PackerSync may help!)" end
@@ -15,7 +18,7 @@ g.mapleader = " " -- Global leader
 g.maplocalleader = " " -- Local leader
 
 -- Pre-load the colorscheme if possible
-local catppuccin, _ = pcall(cmd, "colorscheme catppuccin")
+local catppuccin, _ = pcall(cmd, "colorscheme kanagawa")
 if not catppuccin then cmd "silent! colorscheme slate" end
 
 -- Load keymaps
@@ -31,4 +34,5 @@ local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
 vim.env.PATH = vim.env.PATH .. (is_windows and ";" or ":") .. vim.fn.stdpath "data" .. "/mason/bin"
 
 -- Require packer & plugins, so *impatient* can cache it.
-require "plugins" -- This will be the config entry point.
+-- require "plugins" -- This will be the config entry point.
+end

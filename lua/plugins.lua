@@ -43,10 +43,39 @@ require("packer").startup(function()
     -------- Colorscheme --------
     -----------------------------
 
+    -- {
+    --   "catppuccin/nvim", -- A Catppuccin patched to look like gruvbox-material, but with a decent performance.
+    --   as = "catppuccin", -- I know, sounds weird, but works.
+    --   config = function() require("plugins.ui.colorscheme").catppuccin() end,
+    -- },\
     {
-      "catppuccin/nvim", -- A Catppuccin patched to look like gruvbox-material, but with a decent performance.
-      as = "catppuccin", -- I know, sounds weird, but works.
-      config = function() require("plugins.ui.colorscheme").catppuccin() end,
+      "rebelot/kanagawa.nvim",
+      config = function()
+        require("kanagawa").setup {
+          transparent = true,
+          dimInactive = true,
+        }
+      end,
+    },
+    {
+      "xiyaowong/nvim-transparent",
+      config = function()
+        require("transparent").setup {
+          enable = true,
+          extra_groups = {
+            "NvimTreeNormal",
+            "FloatBorder",
+            "FloatBorderNC",
+            "TelescopeBorder",
+            "BufferLineTabClose",
+            "BufferlineBufferSelected",
+            "BufferLineFill",
+            "BufferLineBackground",
+            "BufferLineSeparator",
+            "BufferLineIndicatorSelected",
+          },
+        }
+      end,
     },
 
     -----------------------------
@@ -124,6 +153,12 @@ require("packer").startup(function()
           -- Default options
           mode = "background", -- "background" | "foreground" | "single"
         }
+      end,
+    },
+    {
+      "brenoprata10/nvim-highlight-colors",
+      config = function()
+        require("nvim-highlight-colors").setup {}
       end,
     },
 

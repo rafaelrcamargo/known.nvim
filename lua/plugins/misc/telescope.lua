@@ -14,10 +14,10 @@ return function()
         height = 10, -- maximally available lines
       },
     },
-    pickers = {
-      find_files = { theme = "ivy" },
-      buffers = { theme = "ivy" },
-      live_grep = { theme = "ivy" },
-    },
+    -- pickers = {
+    --   find_files = { theme = "ivy" },
+    --   buffers = { theme = "ivy" },
+    --   live_grep = { theme = "ivy" },
+    -- },
   }
 end
