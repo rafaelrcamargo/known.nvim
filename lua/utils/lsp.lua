@@ -2,7 +2,7 @@
 local M = { get_diag_count = function() end }
 
 -- Require local vim modules
-local diag, startswith = vim.diagnostic, vim.startswith
+local diag = vim.diagnostic
 
 M.get_diag_count = function()
   local diagnostics = diag.get(0)

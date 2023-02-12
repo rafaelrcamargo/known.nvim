@@ -1,4 +1,4 @@
-return {
+--[[ return {
   fg = "#DCD7BA",
   grey = "#363646",
   base = "#54546D",
@@ -10,9 +10,9 @@ return {
   aqua = "#7AA89F",
   blue = "#7E9CD8",
   purple = "#D27E99",
-}
+} ]]
 
---[[ return {
+return {
   fg = "#ddc7a1",
   grey = "#847567",
   base = "#504945",
@@ -24,4 +24,4 @@ return {
   aqua = "#89b482",
   blue = "#7daea3",
   purple = "#d3869b",
-} ]]
+}

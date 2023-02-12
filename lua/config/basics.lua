@@ -74,6 +74,16 @@ opt.shortmess:append "sI"
 -- when cursor reaches end/beginning of line
 opt.whichwrap:append "<>[]hl"
 
+-- Set completeopt to have a better completion experience
+opt.completeopt = "menuone,noselect"
+
+local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function() vim.highlight.on_yank() end,
+  group = highlight_group,
+  pattern = "*",
+})
+
 -- Set neovide config
 if g.neovide then
   g.neovide_transparency = 0.2

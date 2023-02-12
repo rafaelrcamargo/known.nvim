@@ -18,7 +18,7 @@ else
   g.maplocalleader = " " -- Local leader
 
   -- Pre-load the colorscheme if possible
-  local catppuccin, _ = pcall(cmd, "colorscheme kanagawa")
+  local catppuccin, _ = pcall(cmd, "colorscheme catppuccin")
   if not catppuccin then cmd "silent! colorscheme slate" end
 
   -- Load keymaps

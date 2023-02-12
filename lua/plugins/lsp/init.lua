@@ -92,29 +92,40 @@ lspconfig.ocamllsp.setup {
 local signs = {
   {
     name = "DiagnosticSignError",
+    highlight = "DiagnosticSignErrorHighlight",
     text = "",
   },
   {
     name = "DiagnosticSignWarn",
+    highlight = "DiagnosticSignWarnHighlight",
     text = "",
   },
   {
     name = "DiagnosticSignHint",
+    highlight = "DiagnosticSignHintHighlight",
     text = "",
   },
   {
     name = "DiagnosticSignInfo",
+    highlight = "DiagnosticSignInfoHighlight",
     text = "",
   },
 }
 
 for _, sign in ipairs(signs) do
   vim.fn.sign_define(sign.name, {
+    linehl = sign.highlight,
     texthl = sign.name,
-    text = sign.text,
     numhl = sign.name,
+    text = sign.text,
   })
 end
+
+-- Define the Line Highlighting for the signs
+vim.cmd [[highlight DiagnosticSignErrorHighlight guibg=#4e2f2d]]
+vim.cmd [[highlight DiagnosticSignWarnHighlight guibg=#493d2a]]
+vim.cmd [[highlight DiagnosticSignHintHighlight guibg=#3f412d]]
+vim.cmd [[highlight DiagnosticSignInfoHighlight guibg=#343f3c]]
 
 local config = {
   -- disable virtual text

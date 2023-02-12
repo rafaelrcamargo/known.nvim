@@ -43,13 +43,13 @@ require("packer").startup(function()
     -------- Colorscheme --------
     -----------------------------
 
-    -- {
-    --   "catppuccin/nvim", -- A Catppuccin patched to look like gruvbox-material, but with a decent performance.
-    --   as = "catppuccin", -- I know, sounds weird, but works.
-    --   config = function() require("plugins.ui.colorscheme").catppuccin() end,
-    -- },
-
     {
+      "catppuccin/nvim", -- A Catppuccin patched to look like gruvbox-material, but with a decent performance.
+      as = "catppuccin", -- I know, sounds weird, but works.
+      config = function() require("plugins.ui.colorscheme").catppuccin() end,
+    },
+
+    --[[ {
       "rebelot/kanagawa.nvim",
       config = function()
         require("kanagawa").setup {
@@ -77,7 +77,7 @@ require("packer").startup(function()
           },
         }
       end,
-    },
+    }, ]]
 
     -----------------------------
     -------- Treesitter ---------
@@ -104,7 +104,7 @@ require("packer").startup(function()
     {
       "nvim-telescope/telescope.nvim", -- Fuzzy finder
       event = "ModeChanged",
-      config = function() require "plugins.misc.telescope"() end,
+      config = function() require "plugins.misc.telescope" () end,
     },
     {
       "AckslD/nvim-neoclip.lua", -- Clipboard manager
@@ -149,16 +149,17 @@ require("packer").startup(function()
     },
     {
       "mrshmllow/document-color.nvim",
-      config = function()
-        require("document-color").setup {
-          -- Default options
-          mode = "background", -- "background" | "foreground" | "single"
-        }
-      end,
+      config = function() require("document-color").setup { mode = "background" } end,
     },
     {
       "brenoprata10/nvim-highlight-colors",
       config = function() require("nvim-highlight-colors").setup {} end,
+    },
+    {
+      "kevinhwang91/nvim-ufo",
+      keys = { "of", "cf", "tf" },
+      requires = "kevinhwang91/promise-async",
+      config = function() require "plugins.lsp.ufo" end,
     },
 
     -----------------------------
@@ -180,14 +181,8 @@ require("packer").startup(function()
       cmd = "UndotreeToggle",
     },
     {
-      "CRAG666/code_runner.nvim", -- Run code
-      cmd = "RunCode",
-      config = function() require("plugins.misc.runner").config() end,
-      setup = function() require("plugins.misc.runner").setup() end,
-    },
-    {
       "mg979/vim-visual-multi", -- Multiple cursors
-      keys = { "n", "d" },
+      event = "CursorMoved",
       setup = function() vim.g.VM_default_mappings = 0 end,
     },
     {
@@ -204,7 +199,6 @@ require("packer").startup(function()
     },
     {
       "Pocco81/auto-save.nvim", -- Auto save, when possible
-      event = "CursorMoved",
       config = function() require "plugins.misc.autosave" end,
     },
     {
@@ -219,7 +213,7 @@ require("packer").startup(function()
     {
       "tjdevries/vim-inyoface", -- Make comments appear IN YO FACE
       keys = { "c" },
-      module = "inyoface",
+
       config = function() require "plugins.misc.inyoface" end,
     },
     {
@@ -249,12 +243,12 @@ require("packer").startup(function()
     {
       "lewis6991/gitsigns.nvim", -- Git mods highlight
       event = "BufRead",
-      config = function() require "plugins.git.signs"() end,
+      config = function() require "plugins.git.signs" () end,
     },
     {
       "f-person/git-blame.nvim",
       event = "CursorMoved",
-      setup = function() require "plugins.git.blame"() end,
+      setup = function() require "plugins.git.blame" () end,
     },
 
     -----------------------------
@@ -322,37 +316,7 @@ require("packer").startup(function()
     -----------------------------
     --------- Completion --------
     -----------------------------
-
-    {
-      "ms-jpq/coq_nvim",
-      branch = "coq",
-      event = "InsertEnter",
-      setup = function() require "plugins.coq" end,
-    },
-    {
-      "ms-jpq/coq.artifacts",
-      event = "InsertEnter",
-      branch = "artifacts",
-    },
-    {
-      "ms-jpq/coq.thirdparty",
-      branch = "3p",
-      event = "InsertEnter",
-      config = function() require "plugins.coq.thirdparty" end,
-    },
   }
 
   if packer_bootstrap then require("packer").sync() end
 end)
-
-local augroup, autocmd = vim.api.nvim_create_augroup, vim.api.nvim_create_autocmd
-
--- Set completeopt to have a better completion experience
-vim.o.completeopt = "menuone,noselect"
-
-local highlight_group = augroup("YankHighlight", { clear = true })
-autocmd("TextYankPost", {
-  callback = function() vim.highlight.on_yank() end,
-  group = highlight_group,
-  pattern = "*",
-})

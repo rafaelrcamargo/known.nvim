@@ -1,14 +1,5 @@
 local M = {}
 
-function M.nebulous()
-  require("nebulous").setup {
-    variant = "fullmoon",
-    disable = {
-      background = true,
-    },
-  }
-end
-
 function M.catppuccin()
   require("catppuccin").setup {
     transparent_background = true,

@@ -17,7 +17,7 @@ keymap("n", "<C-Up>", ":-1<CR>:-1<CR>:-1<CR>:-1<CR>:-1<CR>", opts)
 keymap("n", "<C-Down>", ":+1<CR>:+1<CR>:+1<CR>:+1<CR>:+1<CR>", opts)
 
 -- Toggle NvimTree
-keymap("n", "<leader>tt", ":NvimTreeToggle<CR>", opts)
+keymap("n", "ft", ":NvimTreeToggle<CR>", opts)
 
 -- Telescope mappings
 keymap("n", "<leader>ff", ":Telescope find_files<CR>", opts)
@@ -45,11 +45,10 @@ keymap("i", "<C-v>", "<C-r>+", opts)
 keymap("n", ".", "@:", opts)
 
 -- Search
-keymap("n", "<C-f>", ":%s/", opts)
+keymap("n", "<C-S-f>", ":%s/", opts)
 
 -- Terminal
-keymap("n", "T", ":ToggleTerm<CR>", opts)
-keymap("t", "T", ":ToggleTerm<CR>", opts)
+keymap("n", "tt", ":ToggleTerm<CR>", opts)
 
 -- Stay in indent mode
 keymap("v", "<", "<gv", opts)
