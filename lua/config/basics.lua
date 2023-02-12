@@ -20,8 +20,8 @@ opt.swapfile = false
 
 opt.undofile = true
 
-opt.clipboard = "unnamedplus"
--- opt.clipboard = "" -- Disabling for now, it's WSL...
+-- opt.clipboard = "unnamedplus"
+opt.clipboard = "" -- Disabling for now, it's WSL...
 
 opt.cmdheight = 1
 opt.cursorline = true
