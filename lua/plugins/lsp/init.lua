@@ -49,7 +49,7 @@ capabilities.textDocument.colorProvider = {
 }
 
 -- Setup LSP for Lua
-lspconfig.sumneko_lua.setup {
+lspconfig.lua_ls.setup {
   on_attach = on_attach,
 }
 

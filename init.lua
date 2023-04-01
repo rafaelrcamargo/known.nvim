@@ -19,12 +19,7 @@ local catppuccin, _ = pcall(cmd, "colorscheme catppuccin")
 if not catppuccin then cmd "silent! colorscheme slate" end
 
 -- Load keymaps
-vim.schedule(function()
-  require "config.keymaps"
-
-  -- Add :Q as a alias for :q
-  cmd "command Q q"
-end)
+vim.schedule(function() require "config.keymaps" end)
 
 -- add binaries installed by mason.nvim to path
 local is_windows = vim.loop.os_uname().sysname == "Windows_NT"

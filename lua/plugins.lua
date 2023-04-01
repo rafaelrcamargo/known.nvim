@@ -49,36 +49,6 @@ require("packer").startup(function()
       config = function() require("plugins.ui.colorscheme").catppuccin() end,
     },
 
-    --[[ {
-      "rebelot/kanagawa.nvim",
-      config = function()
-        require("kanagawa").setup {
-          transparent = true,
-          dimInactive = true,
-        }
-      end,
-    },
-    {
-      "xiyaowong/nvim-transparent",
-      config = function()
-        require("transparent").setup {
-          enable = true,
-          extra_groups = {
-            "NvimTreeNormal",
-            "FloatBorder",
-            "FloatBorderNC",
-            "TelescopeBorder",
-            "BufferLineTabClose",
-            "BufferlineBufferSelected",
-            "BufferLineFill",
-            "BufferLineBackground",
-            "BufferLineSeparator",
-            "BufferLineIndicatorSelected",
-          },
-        }
-      end,
-    }, ]]
-
     -----------------------------
     -------- Treesitter ---------
     -----------------------------
@@ -104,7 +74,7 @@ require("packer").startup(function()
     {
       "nvim-telescope/telescope.nvim", -- Fuzzy finder
       event = "ModeChanged",
-      config = function() require "plugins.misc.telescope"() end,
+      config = function() require "plugins.misc.telescope" () end,
     },
     {
       "AckslD/nvim-neoclip.lua", -- Clipboard manager
@@ -213,7 +183,6 @@ require("packer").startup(function()
     {
       "tjdevries/vim-inyoface", -- Make comments appear IN YO FACE
       keys = { "c" },
-
       config = function() require "plugins.misc.inyoface" end,
     },
     {
@@ -234,7 +203,7 @@ require("packer").startup(function()
     {
       "b0o/SchemaStore.nvim",
       ft = { "json", "yaml" },
-    }, -- TODO: Test out this plugin
+    }, -- TODO: Test this plugin
 
     -----------------------------
     ----------- Git -------------
@@ -243,12 +212,12 @@ require("packer").startup(function()
     {
       "lewis6991/gitsigns.nvim", -- Git mods highlight
       event = "BufRead",
-      config = function() require "plugins.git.signs"() end,
+      config = function() require "plugins.git.signs" () end,
     },
     {
       "f-person/git-blame.nvim",
       event = "CursorMoved",
-      setup = function() require "plugins.git.blame"() end,
+      setup = function() require "plugins.git.blame" () end,
     },
 
     -----------------------------
@@ -319,7 +288,13 @@ require("packer").startup(function()
 
     { -- Autocompletion
       "hrsh7th/nvim-cmp",
-      requires = { "hrsh7th/cmp-nvim-lsp", "L3MON4D3/LuaSnip", "saadparwaiz1/cmp_luasnip" },
+      requires = {
+        "hrsh7th/cmp-nvim-lsp",
+        "L3MON4D3/LuaSnip",
+        "saadparwaiz1/cmp_luasnip",
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-path",
+      },
     },
   }
 
@@ -338,35 +313,21 @@ cmp.setup {
   snippet = {
     expand = function(args) luasnip.lsp_expand(args.body) end,
   },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
   mapping = cmp.mapping.preset.insert {
-    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = cmp.mapping.complete(),
-    ["<CR>"] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
-    ["<Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
+    ["<C-e>"] = cmp.mapping.abort(),
+    ["<CR>"] = cmp.mapping.confirm { select = true }, -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
   },
-  sources = {
+  sources = cmp.config.sources({
     { name = "nvim_lsp" },
     { name = "luasnip" },
-  },
+  }, {
+    { name = "buffer" },
+  }),
 }

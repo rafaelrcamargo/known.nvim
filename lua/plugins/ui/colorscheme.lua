@@ -63,6 +63,8 @@ function M.catppuccin()
       },
     },
   }
+
+  vim.cmd "CatppuccinCompile"
 end
 
 return M

@@ -10,6 +10,8 @@ opt.lazyredraw = true -- Unstable
 opt.shadafile = "NONE"
 opt.shadafile = ""
 
+opt.cmdheight = 0
+
 --------------
 --- Basics ---
 --------------
