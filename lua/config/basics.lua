@@ -10,8 +10,6 @@ opt.lazyredraw = true -- Unstable
 opt.shadafile = "NONE"
 opt.shadafile = ""
 
-opt.cmdheight = 0
-
 --------------
 --- Basics ---
 --------------
@@ -25,7 +23,7 @@ opt.undofile = true
 -- opt.clipboard = "unnamedplus"
 opt.clipboard = "" -- Disabling for now, it's WSL...
 
-opt.cmdheight = 1
+opt.cmdheight = 0
 opt.cursorline = true
 
 --------------

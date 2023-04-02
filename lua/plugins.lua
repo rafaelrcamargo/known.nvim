@@ -20,14 +20,14 @@ require("packer").startup(function()
     -------- Essentials ---------
     -----------------------------
 
-    {
+    { -- Required by *
       "nvim-lua/plenary.nvim",
       module = "plenary",
-    }, -- Required by *
-    {
+    },
+    { -- Dev icons, used everywhere
       "kyazdani42/nvim-web-devicons",
       module = "nvim-web-devicons",
-    }, -- Dev icons, used everywhere
+    },
 
     -----------------------------
     -------- Profiling ----------
@@ -43,9 +43,9 @@ require("packer").startup(function()
     -------- Colorscheme --------
     -----------------------------
 
-    {
-      "catppuccin/nvim", -- A Catppuccin patched to look like gruvbox-material, but with a decent performance.
-      as = "catppuccin", -- I know, sounds weird, but works.
+    { -- A Catppuccin patched to look like gruvbox-material, but with a decent performance.
+      "catppuccin/nvim",
+      as = "catppuccin", -- I mean, it works...
       config = function() require("plugins.ui.colorscheme").catppuccin() end,
     },
 
@@ -292,7 +292,7 @@ require("packer").startup(function()
         "hrsh7th/cmp-nvim-lsp",
         "L3MON4D3/LuaSnip",
         "saadparwaiz1/cmp_luasnip",
-        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-nvim-lsp-signature-help",
         "hrsh7th/cmp-path",
       },
     },
@@ -301,15 +301,16 @@ require("packer").startup(function()
   if packer_bootstrap then require("packer").sync() end
 end)
 
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-
 -- nvim-cmp setup
 local cmp = require "cmp"
 local luasnip = require "luasnip"
 
+luasnip.config.setup {}
+
 cmp.setup {
+  completion = {
+    autocomplete = false,
+  },
   snippet = {
     expand = function(args) luasnip.lsp_expand(args.body) end,
   },
@@ -318,16 +319,21 @@ cmp.setup {
     documentation = cmp.config.window.bordered(),
   },
   mapping = cmp.mapping.preset.insert {
-    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = cmp.mapping.complete(),
-    ["<C-e>"] = cmp.mapping.abort(),
-    ["<CR>"] = cmp.mapping.confirm { select = true }, -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ["<CR>"] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
   },
   sources = cmp.config.sources({
     { name = "nvim_lsp" },
+    { name = "nvim_lsp_signature_help" },
     { name = "luasnip" },
+    { name = "path" },
   }, {
-    { name = "buffer" },
+    { name = "buffer", keyword_length = 3 },
   }),
+  sorting = {},
 }

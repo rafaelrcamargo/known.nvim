@@ -42,52 +42,29 @@ local on_attach = function(client)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
 -- You are now capable!
 capabilities.textDocument.colorProvider = {
   dynamicRegistration = true,
 }
 
--- Setup LSP for Lua
-lspconfig.lua_ls.setup {
-  on_attach = on_attach,
+local servers = {
+  "lua_ls",
+  "pyright",
+  "tsserver",
+  "tailwindcss",
+  "stylelint_lsp",
+  "jsonls",
+  "rust_analyzer",
 }
 
--- Setup LSP for Python
-lspconfig.pyright.setup {
-  on_attach = on_attach,
-}
-
--- Setup TSServer LSP for JavaScript, TypeScript + JS/TS React
-lspconfig.tsserver.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
-
--- Setup Tailwind CSS LSP for Tailwind CSS
-lspconfig.tailwindcss.setup {
-  on_attach = on_attach,
-}
-
--- Setup Stylelint LSP for CSS
-lspconfig.stylelint_lsp.setup {
-  on_attach = on_attach,
-}
-
--- Setup JSON LSP for JSON
-lspconfig.jsonls.setup {
-  on_attach = on_attach,
-}
-
--- Setup Rust Analyzer LSP for Rust
-lspconfig.rust_analyzer.setup {
-  on_attach = on_attach,
-}
-
--- Setup LSP for OCaml
-lspconfig.ocamllsp.setup {
-  on_attach = on_attach,
-}
+for _, lsp in ipairs(servers) do
+  lspconfig[lsp].setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+  }
+end
 
 local signs = {
   {

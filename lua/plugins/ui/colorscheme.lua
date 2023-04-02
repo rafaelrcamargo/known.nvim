@@ -64,7 +64,7 @@ function M.catppuccin()
     },
   }
 
-  vim.cmd "CatppuccinCompile"
+  vim.cmd "silent! CatppuccinCompile"
 end
 
 return M
