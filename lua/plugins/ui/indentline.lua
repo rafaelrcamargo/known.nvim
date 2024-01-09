@@ -1,4 +1,4 @@
-vim.cmd [[highlight IndentBlanklineIndent1 guibg=#847567 gui=nocombine]]
+# vim.cmd [[highlight IndentBlanklineIndent1 guibg=#847567 gui=nocombine]]
 
 require("indent_blankline").setup {
   use_treesitter = true,

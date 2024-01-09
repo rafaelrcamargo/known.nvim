@@ -128,16 +128,7 @@ local function file_icon()
     default = false,
   })
 
-  icon.str = string.format(" %s ", icon_str or "")
-
-  --[[ if icon_hlname then
-        local fg = api.nvim_get_hl_by_name(icon_hlname, true).foreground
-        if fg then
-            icon.hl = {
-                fg = string.format("#%06x", fg)
-             }
-        end
-    end ]]
+  icon.str = string.format(" %s ", icon_str or "")
 
   return icon
 end
@@ -222,7 +213,7 @@ local function lsp_check_diagnostics()
     },
   })
   if not isempty(diagnostics) then return "  " end
-  return "   "
+  return "  "
 end
 
 table.insert(components.active[1], {

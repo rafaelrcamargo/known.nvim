@@ -268,6 +268,7 @@ require("packer").startup(function()
     {
       "j-hui/fidget.nvim",
       event = { "BufRead" },
+      tag = "legacy",
       config = function()
         require("fidget").setup {
           window = {
